@@ -12,7 +12,8 @@ using namespace std;
 const int CURR_YEAR = 2019;
 const string DAY_IN_WORD[7] ={"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
-struct date{
+struct date
+{
   int year;
   int month;
   int day;
