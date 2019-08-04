@@ -5,8 +5,9 @@
 
 using namespace std;
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
+  char c;
   int n_customer = 0, choice = 0;
   struct customer* customers;
   ifstream infile;
@@ -14,6 +15,8 @@ int main(int argc, char* argv[])
   valid_cla(argc, argv);//validation of command line argument
   open_file(infile, argv);//open customer info file
   infile >> n_customer;
+  infile.get(c);
+  cout << "infile.get(c)" << c << endl;
   customers = allocate_customer(n_customer);
   read_customer_data(customers, n_customer, infile);//read in customer data
   infile.close();
@@ -21,7 +24,7 @@ int main(int argc, char* argv[])
   cout << "11:00 A.M. - 12:30 A.M." << endl;
   cout << "12:30 P.M. - 02:00 P.M." << endl;
   cout << "05:00 P.M. - 06:30 P.M." << endl;
-  cout << "06:30 P.M. - 08:00 P.M." << endl << endl;
+  cout << "06:30 P.M. - 08:00 P.M." << endl;
   do
   {
     choice = 0;
