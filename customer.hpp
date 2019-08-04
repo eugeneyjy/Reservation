@@ -11,7 +11,8 @@
 
 using namespace std;
 
-struct customer{
+struct customer
+{
   string first_name;
   string last_name;
   string contact;
@@ -25,16 +26,19 @@ struct customer* allocate_customer(int n_customer);
 void free_customer(struct customer** customers);
 void read_customer_data(struct customer* customers, int n_customer, ifstream& infile);
 int longest_name(struct customer* customers, int n_customer);
+
 void print_words(int length, string word);
 void print_content(struct customer* customers, int n_customer);
 void print_heading(int name_length);
 void print_seperate(int name_length);
 void print_close(int name_length);
 void print_info(struct customer* customers, int n_customer);
+
 void sort_by_date(struct customer* customers, int n_customer);
 void swap_customer(struct customer* customers, int i, int j);
 void save_data(struct customer* customers, int n_customer, char* argv[], ofstream& outfile);
 void copy_customer(struct customer* source, struct customer* destionation, int n_customer);
+
 void add_customer(struct customer* customers, struct customer customer_info, int n_customer);
 bool is_int(string num);
 int get_betwn(int min, int max);
