@@ -81,32 +81,35 @@ void read_customer_data(struct customer* customers, int n_customer, ifstream &in
   string line;
   string testing[10];
   int found, i = 0, j = 0, l = 0;
-  while(j != n_customer)
+  while(j < n_customer)
   {
-    getline(infile, line);
-    cout << line << endl;
-    found = line.find(",");
-    for (int k = 0; k < found; k++)
+    for (int x = 0; x < l; x++)
     {
-      testing[l] += line[k];
+      testing[x] = "";
     }
-    l++;
-    line.erase(0 ,found + 1);
+    l = 0;
+    getline(infile, line);
+    for(int i = 0; i < 6; i++)
+    {
+      found = line.find(",");
+      for (int k = 0; k < found; k++)
+      {
+        testing[l] += line[k];
+      }
+      l++;
+      line.erase(0, found + 1);
+    }
     if(infile.fail())
     {
       cerr << "Failed to read customer." << endl;
     }
+    customers[j].name = testing[0];
+    customers[j].contact = testing[2];
+    customers[j].session = stoi(testing[1]);
+    customers[j].curr_date.year = stoi(testing[3]);
+    customers[j].curr_date.month = stoi(testing[4]);
+    customers[j].curr_date.day = stoi(testing[5]);
     j++;
-  }
-  // customers[i].name = testing[0];
-  // customers[i].contact = testing[2];
-  // customers[i].session = stoi(testing[1]);
-  // customers[i].curr_date.year = stoi(testing[3]);
-  // customers[i].curr_date.month = stoi(testing[4]);
-  // customers[i].curr_date.day = stoi(testing[5]);
-  for (int x = 0; x < l; x++)
-  {
-    cout << testing[x];
   }
 }
 
