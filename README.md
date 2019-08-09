@@ -17,17 +17,17 @@ by using nested array of structures.
 
 After building the list, display a menu with the following options:
 
-(a) **List** – Display the reservation records. Each display should contain an appropriate
+  (a) **List** – Display the reservation records. Each display should contain an appropriate
 heading and column captions.
 
-(b) **Search for availability** – Search for the availability in the list using the date, time and
+  (b) **Search for availability** – Search for the availability in the list using the date, time and
 number of guests.
 
-(c) **Update reservation record** – Ask user for date, time and number of guests. Then
+  (c) **Update reservation record** – Ask user for date, time and number of guests. Then
 search for availability in the list using the input data; reservation record should be
 updated if available.
 
-(d) **Exit** – Stop the program. The program will write the updated data in the list to the
+  (d) **Exit** – Stop the program. The program will write the updated data in the list to the
 file.
 
 ## Advanced Questions
@@ -40,9 +40,9 @@ guests.
 Search for guest record(s) in the list using the name or phone number, and print the full
 details for the record(s). It can match word(s)/number within a string/number, and also print
 multiple results. This is best explained by the following examples:
-- If the full name “**Paul J. Deitel**” is stored inside the list, searching for either “**Paul**” or
+  - If the full name “**Paul J. Deitel**” is stored inside the list, searching for either “**Paul**” or
 “**Deitel**” should return the record.
-- If the phone numbers “**012-3214567**”, “**012-3314567**”, and “**012-3414567**” are in the list,
+  - If the phone numbers “**012-3214567**”, “**012-3314567**”, and “**012-3414567**” are in the list,
 then searching for “**14567**” must print all three records (because the number “14567”
 occurs in all three phone numbers).
 Note that you may need to use `strstr()` which allows you to locate substring.
