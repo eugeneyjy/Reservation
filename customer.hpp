@@ -26,6 +26,7 @@ struct customer* allocate_customer(int n_customer);
 void free_customer(struct customer* *customers);
 void read_customer_data(struct customer* customers, int n_customer, ifstream &infile);
 int longest_name(struct customer* customers, int n_customer);
+int longest_contact(struct customer* customers, int n_customer);
 void print_words(int length, string word);
 void print_content(struct customer* customers, int n_customer);
 void print_heading(int name_length);

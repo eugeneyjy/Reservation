@@ -140,6 +140,31 @@ int longest_name(struct customer* customers, int n_customer)
 }
 
 /*********************************************************************
+** Function: Find the longest name among the customers
+** Description: Use to find the longest name to determine the size of
+** name column
+** Parameters: struct customer*, int
+** Pre-Conditions: customer pointer exist and not empty, max index of
+** customer array match the number of customer
+** Post-Conditions: Calculate and return the number of character of the
+** longest name
+*********************************************************************/
+int longest_contact(struct customer* customers, int n_customer)
+{
+  int max_length = 0;
+  int combine_length = 0;
+  for(int i = 0; i < n_customer; i++)
+  {
+    combine_length = customers[i].contact.length();
+    if(combine_length > max_length)
+    {
+      max_length = combine_length;
+    }
+  }
+  return max_length;
+}
+
+/*********************************************************************
 ** Function: Print a character for N times
 ** Description: Use to format the customer list
 ** Parameters: int, string
@@ -166,10 +191,12 @@ void print_words(int length, string word)
 void print_content(struct customer* customers, int n_customer)
 {
   int longest_name_length = longest_name(customers, n_customer) + 1;
-  int name_length;
+  int longest_contact_length = longest_contact(customers, n_customer) + 1;
+  int name_length, contact_length;
   string day_of_week;
   for(int i = 0; i < n_customer; i++)
   {
+    contact_length = customers[i].contact.length();
     name_length = customers[i].name.length();
     day_of_week = DAY_IN_WORD[day_of_the_week (customers[i].curr_date.year, customers[i].curr_date.month, customers[i].curr_date.day) ];
     //print date info
@@ -179,7 +206,7 @@ void print_content(struct customer* customers, int n_customer)
     //print name
     cout << customers[i].name << " " << setw (longest_name_length - name_length) << "|";
     //print contact info
-    cout << customers[i].contact << "|";
+    cout << customers[i].contact << setw (longest_contact_length - contact_length) << "|";
     //print session
     cout << customers[i].session << setw(7) << "|";
     //print seat(s)
@@ -206,10 +233,10 @@ void print_heading(int name_length)
 {
   cout << "┌──────────────────────┬";
   print_words(name_length, "─");
-  cout << "┬──────────┬───────┬───────┐" << endl;
+  cout << "┬───────────┬───────┬───────┐" << endl;
   cout << "|Date                  |Name";
   print_words(name_length - 4, " ");
-  cout << "|Contact   |Session|Seat(s)|" << endl;
+  cout << "|Contact    |Session|Seat(s)|" << endl;
   print_seperate(name_length);
 }
 
@@ -224,7 +251,7 @@ void print_seperate(int name_length)
 {
   cout << "├──────────────────────┼";
   print_words(name_length, "─");
-  cout << "┼──────────┼───────┼───────┤" << endl;
+  cout << "┼───────────┼───────┼───────┤" << endl;
 }
 
 /*********************************************************************
@@ -238,7 +265,7 @@ void print_close(int name_length)
 {
   cout << "└──────────────────────┴";
   print_words(name_length, "─");
-  cout << "┴──────────┴───────┴───────┘" << endl;
+  cout << "┴───────────┴───────┴───────┘" << endl;
 }
 
 /*********************************************************************
