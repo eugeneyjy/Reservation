@@ -17,6 +17,7 @@ struct customer
   string contact;
   int session;
   struct date curr_date;
+  int n_seat;
 };
 
 void valid_cla(int argc, char *argv[]);
@@ -31,6 +32,7 @@ void print_heading(int name_length);
 void print_seperate(int name_length);
 void print_close(int name_length);
 void print_info(struct customer* customers, int n_customer);
+void print_session();
 
 void sort_by_date(struct customer* customers, int n_customer);
 void swap_customer(struct customer* customers, int i, int j);
@@ -47,11 +49,11 @@ void ask_session(int &session);
 void ask_guest(int &guest_num);
 void ask_name(string &first_name, string &last_name);
 void ask_contact(string &contact);
-void ask_info(struct customer &customer_info, int &guest_num);
+void ask_info(struct customer &customer_info);
 void run_option(struct customer* *customers, int &n_customer, int option);
 void available_msg(bool result, int empty_space);
-bool src_available(struct customer* customers, int n_customer, int &empty_space, int guest_num, struct customer customer_info);
+bool src_available(struct customer* customers, int n_customer, int &empty_space, struct customer customer_info);
 void add_customer_info(struct customer* *customers, int n_customer, struct customer customer_info);
-void add_reserve(struct customer* *customers, int &n_customer, struct customer customer_info, int guest_num);
+void add_reserve(struct customer* *customers, int &n_customer, struct customer customer_info);
 
 #endif

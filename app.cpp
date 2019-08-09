@@ -20,11 +20,7 @@ int main(int argc, char *argv[])
   customers = allocate_customer(n_customer);
   read_customer_data(customers, n_customer, infile);//read in customer data
   infile.close();
-  cout << "--Session Time Table--" << endl;
-  cout << "11:00 A.M. - 12:30 A.M." << endl;
-  cout << "12:30 P.M. - 02:00 P.M." << endl;
-  cout << "05:00 P.M. - 06:30 P.M." << endl;
-  cout << "06:30 P.M. - 08:00 P.M." << endl;
+  print_session();
   do
   {
     choice = 0;

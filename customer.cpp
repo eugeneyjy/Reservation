@@ -15,7 +15,7 @@ using namespace std;
 ** Post-Conditions: Command line argument only contain 2 vectors if
 ** program goes on
 *********************************************************************/
-void valid_cla(int argc, char *argv[])
+void valid_cla(int argc, char* argv[])
 {
   if(argc != 2)
   {
@@ -31,7 +31,7 @@ void valid_cla(int argc, char *argv[])
 ** Pre-Conditions: There is a second vector in the command line argument
 ** Post-Conditions: Success or fail to open the file I/O
 *********************************************************************/
-void open_file(ifstream &infile, char *argv[])
+void open_file(ifstream& infile, char* argv[])
 {
   infile.open(argv[1]);
   if(infile.fail())
@@ -62,7 +62,7 @@ struct customer* allocate_customer(int n_customer)
 ** Pre-Conditions: Memory exist
 ** Post-Conditions: dynamic allocated customer will be free
 *********************************************************************/
-void free_customer(struct customer* *customers)
+void free_customer(struct customer** customers)
 {
   delete [] (*customers);
 }
@@ -76,7 +76,7 @@ void free_customer(struct customer* *customers)
 ** than number of customer
 ** Post-Conditions: customers data passed in to customer array
 *********************************************************************/
-void read_customer_data(struct customer* customers, int n_customer, ifstream &infile)
+void read_customer_data(struct customer* customers, int n_customer, ifstream& infile)
 {
   string line;
   string testing[10];
@@ -89,7 +89,7 @@ void read_customer_data(struct customer* customers, int n_customer, ifstream &in
     }
     l = 0;
     getline(infile, line);
-    for(int i = 0; i < 6; i++)
+    for(int i = 0; i < 7; i++)
     {
       found = line.find(",");
       for (int k = 0; k < found; k++)
@@ -109,6 +109,7 @@ void read_customer_data(struct customer* customers, int n_customer, ifstream &in
     customers[j].curr_date.year = stoi(testing[3]);
     customers[j].curr_date.month = stoi(testing[4]);
     customers[j].curr_date.day = stoi(testing[5]);
+    customers[j].n_seat = stoi(testing[6]);
     j++;
   }
 }
@@ -180,7 +181,9 @@ void print_content(struct customer* customers, int n_customer)
     //print contact info
     cout << customers[i].contact << "|";
     //print session
-    cout << customers[i].session << setw(7) << "|" << endl;
+    cout << customers[i].session << setw(7) << "|";
+    //print seat(s)
+    cout << customers[i].n_seat << setw(7) << "|" << endl;
     if(i == n_customer - 1)
     {
       break;
@@ -203,10 +206,10 @@ void print_heading(int name_length)
 {
   cout << "┌──────────────────────┬";
   print_words(name_length, "─");
-  cout << "┬──────────┬───────┐" << endl;
+  cout << "┬──────────┬───────┬───────┐" << endl;
   cout << "|Date                  |Name";
   print_words(name_length - 4, " ");
-  cout << "|Contact   |Session|" << endl;
+  cout << "|Contact   |Session|Seat(s)|" << endl;
   print_seperate(name_length);
 }
 
@@ -221,7 +224,7 @@ void print_seperate(int name_length)
 {
   cout << "├──────────────────────┼";
   print_words(name_length, "─");
-  cout << "┼──────────┼───────┤" << endl;
+  cout << "┼──────────┼───────┼───────┤" << endl;
 }
 
 /*********************************************************************
@@ -235,7 +238,7 @@ void print_close(int name_length)
 {
   cout << "└──────────────────────┴";
   print_words(name_length, "─");
-  cout << "┴──────────┴───────┘" << endl;
+  cout << "┴──────────┴───────┴───────┘" << endl;
 }
 
 /*********************************************************************
@@ -313,7 +316,7 @@ void sort_by_date(struct customer* customers, int n_customer)
 ** index match with number of customers
 ** Post-Conditions: Write sorted customers data in to text file
 *********************************************************************/
-void save_data(struct customer* customers, int n_customer, char *argv[], ofstream &outfile)
+void save_data(struct customer* customers, int n_customer, char* argv[], ofstream& outfile)
 {
   outfile.open(argv[1]);
   if(outfile.fail())
@@ -327,7 +330,8 @@ void save_data(struct customer* customers, int n_customer, char *argv[], ofstrea
   {
     outfile << customers[i].name << "," << customers[i].session << ",";
     outfile << customers[i].contact << "," << customers[i].curr_date.year << ",";
-    outfile << customers[i].curr_date.month << "," << customers[i].curr_date.day << "," << endl;
+    outfile << customers[i].curr_date.month << "," << customers[i].curr_date.day << ",";
+    outfile << customers[i].n_seat << "," << endl;
   }
 }
 
@@ -350,6 +354,7 @@ void copy_customer(struct customer* source, struct customer* destination, int n_
     destination[i].curr_date.year = source[i].curr_date.year;
     destination[i].curr_date.month = source[i].curr_date.month;
     destination[i].curr_date.day = source[i].curr_date.day;
+    destination[i].n_seat = source[i].n_seat;
   }
 }
 
@@ -366,6 +371,7 @@ void add_customer(struct customer* customers, struct customer customer_info, int
   customers[n_customer - 1].contact = customer_info.contact;
   customers[n_customer - 1].session = customer_info.session;
   customers[n_customer - 1].curr_date = customer_info.curr_date;
+  customers[n_customer - 1].n_seat = customer_info.n_seat;
 }
 
 /*********************************************************************
@@ -398,7 +404,7 @@ bool is_int(string num)
 ** Pre-Conditions: Input is in variable string
 ** Post-Conditions: String input changed to int input
 *********************************************************************/
-void get_int(int &input)
+void get_int(int& input)
 {
   string num;
   do
@@ -440,7 +446,7 @@ int get_betwn(int min, int max)
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
-void ask_choice(int &choice)
+void ask_choice(int& choice)
 {
   cout << "Choose an option from above: " << endl;
   cout << "1. Search for availability" << endl;
@@ -457,7 +463,7 @@ void ask_choice(int &choice)
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
-void ask_date(int curr_year, int &year, int &month, int &day)
+void ask_date(int curr_year, int& year, int& month, int& day)
 {
   cout << "Enter date in the following: " << endl;
   cout << "Year: ";
@@ -493,7 +499,7 @@ void ask_date(int curr_year, int &year, int &month, int &day)
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
-void ask_session(int &session)
+void ask_session(int& session)
 {
   cout << "1. 11:00 A.M. - 12:30 A.M." << endl;
   cout << "2. 12:30 P.M. - 02:00 P.M." << endl;
@@ -510,7 +516,7 @@ void ask_session(int &session)
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
-void ask_guest(int &guest_num)
+void ask_guest(int& guest_num)
 {
   cout << "Enter the number of guest for reservation: ";
   guest_num = get_betwn(1, 8);
@@ -523,7 +529,7 @@ void ask_guest(int &guest_num)
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
-void ask_contact(string &contact)
+void ask_contact(string& contact)
 {
   cout << "Enter contact number of the customer: ";
   getline(cin, contact);
@@ -536,10 +542,10 @@ void ask_contact(string &contact)
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
-void ask_name(string &name)
+void ask_name(string& name)
 {
   cout << "Enter the customer name for the reservation:" << endl;
-  cout << "First name: ";
+  cout << "Full name: ";
   getline(cin, name);
 }
 
@@ -550,11 +556,11 @@ void ask_name(string &name)
 ** Pre-Conditions:
 ** Post-Conditions:
 ***************************************************************************/
-void ask_info(struct customer &customer_info, int &guest_num)
+void ask_info(struct customer& customer_info)
 {
   ask_date(CURR_YEAR, customer_info.curr_date.year, customer_info.curr_date.month, customer_info.curr_date.day);
   ask_session(customer_info.session);
-  ask_guest(guest_num);
+  ask_guest(customer_info.n_seat);
   cout << endl;
 }
 
@@ -584,26 +590,26 @@ void available_msg(bool available, int empty_space)
 ** Pre-Conditions:
 ** Post-Conditions:
 ************************************************************************/
-void run_option(struct customer* *customers, int &n_customer, int option)
+void run_option(struct customer** customers, int& n_customer, int option)
 {
-  int guest_num, empty_space;
+  int empty_space;
   bool availability;
   struct customer customer_info;
   if(option == 1)
   {
     cout << "\nSearching for availability..." << endl;
-    ask_info(customer_info, guest_num);
-    availability = src_available(*customers, n_customer, empty_space, guest_num, customer_info);
+    ask_info(customer_info);
+    availability = src_available(*customers, n_customer, empty_space, customer_info);
     available_msg(availability, empty_space);
   }
   else if(option == 2)
   {
     struct customer* temp;
     cout << "\nUpdating reservation record..." << endl;
-    ask_info(customer_info, guest_num);
+    ask_info(customer_info);
     ask_name(customer_info.name);
     ask_contact(customer_info.contact);
-    add_reserve(customers, n_customer, customer_info, guest_num);
+    add_reserve(customers, n_customer, customer_info);
   }
 }
 
@@ -614,14 +620,14 @@ void run_option(struct customer* *customers, int &n_customer, int option)
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
-bool src_available(struct customer* customers, int n_customer, int &empty_space, int guest_num, struct customer customer_info)
+bool src_available(struct customer* customers, int n_customer, int& empty_space, struct customer customer_info)
 {
   empty_space = 8;
   for(int i = 0; i < n_customer; i++)
   {
     if(customers[i].curr_date.year == customer_info.curr_date.year && customers[i].curr_date.month == customer_info.curr_date.month && customers[i].curr_date.day == customer_info.curr_date.day && customers[i].session == customer_info.session)
     {
-      empty_space -= 1;
+      empty_space -= customers[i].n_seat;
     }
   }
   if(empty_space < 0)
@@ -629,7 +635,7 @@ bool src_available(struct customer* customers, int n_customer, int &empty_space,
     cout << "Session overbooked, please check for reservation availability" << endl;
     return false;
   }
-  if(guest_num > empty_space)
+  if(customer_info.n_seat > empty_space)
   {
     return false;
   }
@@ -646,7 +652,7 @@ bool src_available(struct customer* customers, int n_customer, int &empty_space,
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
-void add_customer_info(struct customer* *customers, int n_customer, struct customer customer_info)
+void add_customer_info(struct customer** customers, int n_customer, struct customer customer_info)
 {
     struct customer *temp;
     temp = allocate_customer(n_customer);
@@ -666,22 +672,36 @@ void add_customer_info(struct customer* *customers, int n_customer, struct custo
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
-void add_reserve(struct customer* *customers, int &n_customer, struct customer customer_info, int guest_num)
+void add_reserve(struct customer** customers, int& n_customer, struct customer customer_info)
 {
   int empty_space;
-  bool available = src_available(*customers, n_customer, empty_space, guest_num, customer_info);
+  bool available = src_available(*customers, n_customer, empty_space, customer_info);
   if(!available)
   {
-    cout << "Sorry we have only " << empty_space << "seat(s) left for the reservation time." << endl;
+    cout << endl;
+    cout << "Sorry we have only " << empty_space << " seat(s) left for the reservation time." << endl;
     cout << "Please double check the reservation availability." << endl;
   }
   else
   {
-    for(int i = 0 ; i < guest_num; i++)
-    {
-     add_customer_info(customers, n_customer, customer_info);
-     n_customer++;
-    }
+    add_customer_info(customers, n_customer, customer_info);
+    n_customer++;
     cout << "Update Success!" << endl;
   }
+}
+
+/*********************************************************************
+** Function: Print session table
+** Description: Show user the session time table
+** Parameters:
+** Pre-Conditions:
+** Post-Conditions: Print out session time table
+*********************************************************************/
+void print_session()
+{
+  cout << "--Session Time Table--" << endl;
+  cout << "11:00 A.M. - 12:30 A.M." << endl;
+  cout << "12:30 P.M. - 02:00 P.M." << endl;
+  cout << "05:00 P.M. - 06:30 P.M." << endl;
+  cout << "06:30 P.M. - 08:00 P.M." << endl;
 }
