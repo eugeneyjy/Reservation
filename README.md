@@ -16,13 +16,17 @@ reservation records and prepare them in the text file. As each record is read, i
 by using nested array of structures.
 
 After building the list, display a menu with the following options:
+
 (a) **List** – Display the reservation records. Each display should contain an appropriate
 heading and column captions.
+
 (b) **Search for availability** – Search for the availability in the list using the date, time and
 number of guests.
+
 (c) **Update reservation record** – Ask user for date, time and number of guests. Then
 search for availability in the list using the input data; reservation record should be
 updated if available.
+
 (d) **Exit** – Stop the program. The program will write the updated data in the list to the
 file.
 
