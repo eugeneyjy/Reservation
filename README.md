@@ -28,10 +28,13 @@ file.
 
 ## Advanced Questions
 **Task1: Maintaining contact information of guests**
+
 Modify the storage structures of reservation records and implementations in your program, so
 that it can store not only number of guests in each session but also contact information of
 guests.
+
 **Task2: Add an additional item to your menu: Advanced Search**
+
 Search for guest record(s) in the list using the name or phone number, and print the full
 details for the record(s). It can match word(s)/number within a string/number, and also print
 multiple results. This is best explained by the following examples:
@@ -41,6 +44,7 @@ multiple results. This is best explained by the following examples:
 then searching for “**14567**” must print all three records (because the number “14567”
 occurs in all three phone numbers).
 Note that you may need to use `strstr()` which allows you to locate substring.
+
 Prepare the necessary data file(s) for building the data structure(s) needed in your application.
 You may give additional assumptions for your application.
 
