@@ -17,17 +17,17 @@ by using nested array of structures.
 
 After building the list, display a menu with the following options:
 
-  1. **List** – Display the reservation records. Each display should contain an appropriate
+  **1. List** – Display the reservation records. Each display should contain an appropriate
 heading and column captions.
 
-  2. **Search for availability** – Search for the availability in the list using the date, time and
+  **2. Search for availability** – Search for the availability in the list using the date, time and
 number of guests.
 
-  3. **Update reservation record** – Ask user for date, time and number of guests. Then
+  **3. Update reservation record** – Ask user for date, time and number of guests. Then
 search for availability in the list using the input data; reservation record should be
 updated if available.
 
-  4. **Exit** – Stop the program. The program will write the updated data in the list to the
+  **4. Exit** – Stop the program. The program will write the updated data in the list to the
 file.
 
 ## Advanced Questions
@@ -45,6 +45,7 @@ multiple results. This is best explained by the following examples:
   - If the phone numbers “**012-3214567**”, “**012-3314567**”, and “**012-3414567**” are in the list,
 then searching for “**14567**” must print all three records (because the number “14567”
 occurs in all three phone numbers).
+
 Note that you may need to use `strstr()` which allows you to locate substring.
 
 Prepare the necessary data file(s) for building the data structure(s) needed in your application.
