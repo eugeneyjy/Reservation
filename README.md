@@ -27,15 +27,12 @@ updated if available.
 file.
 
 ## Advanced Questions
-**Task1: Maintaining contact information of guests**
-
+### Task1: Maintaining contact information of guests
 Modify the storage structures of reservation records and implementations in your program, so
 that it can store not only number of guests in each session but also contact information of
 guests.
 
-
-**Task2: Add an additional item to your menu: Advanced Search**
-
+### Task2: Add an additional item to your menu: Advanced Search
 Search for guest record(s) in the list using the name or phone number, and print the full
 details for the record(s). It can match word(s)/number within a string/number, and also print
 multiple results. This is best explained by the following examples:
@@ -63,10 +60,12 @@ Your **REPORT SHOULD CONTAIN** the following:
   2. print out of the C++ program.
   3. sample output(s) (Alt+Prnt Scrn) of your program.
   4. sample of input data and test cases
+  
 Do remember to print the assignment marking sheet and attach as the FIRST PAGE of your
 report. There will be a link created in WBLE subject page for you to submit softcopy of your
 **report**, **C++ program file(s)** and **input text file(s)**. You are required to upload the soft copy
 of your works by the deadline. Late submission will not be entertained.
+
 This practical assignment will contribute 20% of your final mark. Refer to the marking sheet
 for the mark allocations for the report and C++ program. The report will be marked for
 correctness, completeness, presentation style, and relevant use of diagrams/tables/graphs,
