@@ -43,8 +43,10 @@ void add_customer(struct customer* customers, struct customer customer_info, int
 bool is_int(string num);
 int get_betwn(int min, int max);
 void get_choice(int &choice);
+void get_month(int year, int curr_year, int& month, int curr_month);
+void get_day(int year, int curr_year, int month, int curr_month, int& day, int curr_day);
 void ask_choice(int &choice);
-void ask_date(int curr_year, int &year, int &month, int &day);
+void ask_date(int &year, int &month, int &day);
 void ask_session(int &session);
 void ask_guest(int &guest_num);
 void ask_name(string &first_name, string &last_name);

@@ -458,37 +458,88 @@ void ask_choice(int& choice)
 
 /*********************************************************************
 ** Function: Input date from customer
-** Description: Ask date from customer
+** Description: Ask date from customer while asking for reservation
+** information
 ** Parameters: int
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
-void ask_date(int curr_year, int& year, int& month, int& day)
+void ask_date(int& year, int& month, int& day)
 {
+  time_t now = time(NULL);
+  tm* time = localtime(&now);
+  int curr_year = 1900 + time->tm_year;
+  int curr_month = 1+ time->tm_mon;
+  int curr_day = time->tm_mday;
+  cout << curr_year << " " << curr_month << " " << curr_day << endl;
   cout << "Enter date in the following: " << endl;
   cout << "Year: ";
   year = get_betwn(curr_year, 9999);
   cout << "Month: ";
-  month = get_betwn(1, 12);
+  get_month(year, curr_year, month, curr_month);
   cout << "Day: ";
+  get_day(year, curr_year, month, curr_month, day, curr_day);
+}
+
+void get_month(int year, int curr_year, int& month, int curr_month)
+{
+  if(year == curr_year)
+  {
+    month = get_betwn(curr_month, 12);
+  }else
+  {
+    month = get_betwn(1, 12);
+  }
+}
+
+void get_day(int year, int curr_year, int month, int curr_month, int& day, int curr_day)
+{
   if(month == 2)
   {
     if(year % 4 == 0)
     {
-      day = get_betwn(1, 29);
+      if(year == curr_year && month == curr_month)
+      {
+        day = get_betwn(curr_day, 29);
+      }
+      else
+      {
+        day = get_betwn(1, 29);
+      }
     }
     else
     {
-      day = get_betwn(1, 28);
+      if(year == curr_year && month == curr_month)
+      {
+        day = get_betwn(curr_day, 28);
+      }
+      else
+      {
+        day = get_betwn(1, 28);
+      }
     }
   }
-  else if(month == 2 || month == 4 || month == 6 || month == 9 || month == 11)
+  else if(month == 4 || month == 6 || month == 9 || month == 11)
   {
-    day = get_betwn(1, 30);
+    if(year == curr_year && month == curr_month)
+    {
+      day = get_betwn(curr_day, 30);
+    }
+    else
+    {
+      day = get_betwn(1, 30);
+    }
   }
   else
   {
-    day = get_betwn(1, 31);
+    if(year == curr_year && month == curr_month)
+    {
+      day = get_betwn(curr_day, 31);
+    }
+    else
+    {
+      day = get_betwn(1, 31);
+    }
   }
 }
 
@@ -558,7 +609,7 @@ void ask_name(string& name)
 ***************************************************************************/
 void ask_info(struct customer& customer_info)
 {
-  ask_date(CURR_YEAR, customer_info.curr_date.year, customer_info.curr_date.month, customer_info.curr_date.day);
+  ask_date(customer_info.curr_date.year, customer_info.curr_date.month, customer_info.curr_date.day);
   ask_session(customer_info.session);
   ask_guest(customer_info.n_seat);
   cout << endl;
