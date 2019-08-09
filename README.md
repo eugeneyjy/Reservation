@@ -39,3 +39,33 @@ occurs in all three phone numbers).
 Note that you may need to use strstr() which allows you to locate substring.
 Prepare the necessary data file(s) for building the data structure(s) needed in your application.
 You may give additional assumptions for your application.
+Additional Information
+To make your program more robust and avoid problems at run time, do as much status/error
+checking as you could in your program. You may also add on more features in your program
+for enhancement.
+Assessment and Submission
+This is a group assignment. Form a group of 2 or 3 members, preferably from same
+programme as yours. Prepare a report (preferable using word processing software and export
+to portable document format) to answer the questions given above.
+Your REPORT SHOULD CONTAIN the following:
+1. design of the application (structure chart and flowcharts/pseudocode)
+2. print out of the C++ program.
+3. sample output(s) (Alt+Prnt Scrn) of your program.
+4. sample of input data and test cases
+Do remember to print the assignment marking sheet and attach as the FIRST PAGE of your
+report. There will be a link created in WBLE subject page for you to submit softcopy of your
+report, C++ program file(s) and input text file(s). You are required to upload the soft copy
+of your works by the deadline. Late submission will not be entertained.
+This practical assignment will contribute 20% of your final mark. Refer to the marking sheet
+for the mark allocations for the report and C++ program. The report will be marked for
+correctness, completeness, presentation style, and relevant use of diagrams/tables/graphs,
+etc. And the C++ program will be marked for correctness, completeness, program style,
+adequate testing and documentation/comments. It’s your responsibility to understand the
+requirements of the tasks and prepare well for your submission. You will not receive full
+mark if you do not submit the report and C++ program that is a reasonable attempt and
+compiles without error. You might be asked questions about the works you submit to ensure
+that you understand them.
+Plagiarism
+It is important that your solutions to the practical assignment be your own work. It is
+perfectly acceptable to seek help and advice when completing the practical assignment, but
+this must not be taken to the point where what is submitted is in part someone else's work.
