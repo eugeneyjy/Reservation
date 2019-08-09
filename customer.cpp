@@ -325,7 +325,9 @@ void save_data(struct customer* customers, int n_customer, char *argv[], ofstrea
   outfile << n_customer << endl;
   for(int i = 0; i < n_customer; i++)
   {
-    outfile << customers[i].name << "," << customers[i].session << "," << customers[i].contact << "," << customers[i].curr_date.year << "," << customers[i].curr_date.month << "," << customers[i].curr_date.day << endl;
+    outfile << customers[i].name << "," << customers[i].session << ",";
+    outfile << customers[i].contact << "," << customers[i].curr_date.year << ",";
+    outfile << customers[i].curr_date.month << "," << customers[i].curr_date.day << "," << endl;
   }
 }
 
