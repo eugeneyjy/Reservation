@@ -33,6 +33,7 @@ Modify the storage structures of reservation records and implementations in your
 that it can store not only number of guests in each session but also contact information of
 guests.
 
+
 **Task2: Add an additional item to your menu: Advanced Search**
 
 Search for guest record(s) in the list using the name or phone number, and print the full
@@ -48,7 +49,7 @@ Note that you may need to use `strstr()` which allows you to locate substring.
 Prepare the necessary data file(s) for building the data structure(s) needed in your application.
 You may give additional assumptions for your application.
 
-#### Additional Information
+### Additional Information
 To make your program more robust and avoid problems at run time, do as much status/error
 checking as you could in your program. You may also add on more features in your program
 for enhancement.
