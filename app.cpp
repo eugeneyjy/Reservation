@@ -16,7 +16,6 @@ int main(int argc, char *argv[])
   open_file(infile, argv);//open customer info file
   infile >> n_customer;
   infile.get(c);
-  cout << "infile.get(c)" << c << endl;
   customers = allocate_customer(n_customer);
   read_customer_data(customers, n_customer, infile);//read in customer data
   infile.close();
