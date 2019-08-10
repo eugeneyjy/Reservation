@@ -57,7 +57,7 @@ void ask_info(struct customer &customer_info);
 void run_option(struct customer* *customers, int &n_customer, int option);
 void available_msg(bool result, int empty_space);
 bool src_available(struct customer* customers, int n_customer, int &empty_space, struct customer customer_info);
-void advanced_search(struct customer** result, struct customer* customers, int n_customer);
+void advanced_search(struct customer** results, struct customer* customers, int n_customer);
 void add_customer_info(struct customer* *customers, int n_customer, struct customer customer_info);
 void add_reserve(struct customer* *customers, int &n_customer, struct customer customer_info);
 

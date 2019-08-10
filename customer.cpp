@@ -472,8 +472,7 @@ void delete_customer(struct customer* customers, struct customer customer_info, 
         customers[j] = customers[j+1];
       }
       n_customer--;
-      cout << "Success!!!" << endl;
-      break;
+      i--;
     }
   }
 }
@@ -812,6 +811,25 @@ bool src_available(struct customer* customers, int n_customer, int& empty_space,
     return true;
   }
 }
+
+void advanced_search(struct customer** results, struct customer* customers, int n_customer)
+{
+  string search;
+  int matches = n_customer;
+  *results = allocate_customer(n_customer);
+  copy_customer(customers, *results, n_customer);
+  cout << "Search: ";
+  getline(cin, search);
+  for(int i = 0; i < n_customer; i++)
+  {
+    if(customers[i].name.find(search) == string::npos && customers[i].contact.find(search) == string::npos)
+    {
+      delete_customer(*results, customers[i], matches);
+    }
+  }
+  print_info(*results, matches);
+}
+
 
 /*********************************************************************
 ** Function: Update customer info to update reservation record
