@@ -8,7 +8,7 @@ using namespace std;
 int main(int argc, char *argv[])
 {
   char c;
-  int n_customer = 0, choice = 0;
+  int n_customer = 0, choice = 0 , result_count = 0;
   struct customer* customers;
   struct customer* result;//The result u pass in to the advance search
   ifstream infile;
@@ -31,5 +31,9 @@ int main(int argc, char *argv[])
   } while(choice != 3);
   save_data(customers, n_customer, argv, outfile);
   free_customer(&customers);
+  if(result_count > 0)
+  {
+    free_customer(&result);
+  }
   return 0;
 }

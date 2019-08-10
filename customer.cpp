@@ -812,10 +812,10 @@ bool src_available(struct customer* customers, int n_customer, int& empty_space,
   }
 }
 
-void advanced_search(struct customer** results, struct customer* customers, int n_customer)
+void advanced_search(struct customer** results, struct customer* customers, int n_customer, int& matches)
 {
   string search;
-  int matches = n_customer;
+  matches = n_customer;
   *results = allocate_customer(n_customer);
   copy_customer(customers, *results, n_customer);
   cout << "Search: ";
