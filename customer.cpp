@@ -420,6 +420,27 @@ void copy_customer(struct customer* source, struct customer* destination, int n_
 /*********************************************************************
 ** Function:
 ** Description:
+** Parameters:
+** Pre-Conditions:
+** Post-Conditions:
+*********************************************************************/
+bool equal(struct customer lhs, struct customer rhs)
+{
+  if(lhs.name == rhs.name && lhs.contact == rhs.contact && lhs.session == rhs.session
+    && lhs.curr_date.year == rhs.curr_date.year && lhs.curr_date.month == rhs.curr_date.month
+    && lhs.curr_date.day == rhs.curr_date.day && lhs.n_seat == rhs.n_seat)
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+/*********************************************************************
+** Function:
+** Description:
 ** Parameters: struct customer*, struct customer, int
 ** Pre-Conditions:
 ** Post-Conditions:
@@ -431,6 +452,30 @@ void add_customer(struct customer* customers, struct customer customer_info, int
   customers[n_customer - 1].session = customer_info.session;
   customers[n_customer - 1].curr_date = customer_info.curr_date;
   customers[n_customer - 1].n_seat = customer_info.n_seat;
+}
+
+/*********************************************************************
+** Function:
+** Description:
+** Parameters:
+** Pre-Conditions:
+** Post-Conditions:
+*********************************************************************/
+void delete_customer(struct customer* customers, struct customer customer_info, int& n_customer)
+{
+  for(int i = 0; i < n_customer; i++)
+  {
+    if(equal(customers[i], customer_info))
+    {
+      for(int j = i; j < n_customer - 1; j++)
+      {
+        customers[j] = customers[j+1];
+      }
+      n_customer--;
+      cout << "Success!!!" << endl;
+      break;
+    }
+  }
 }
 
 /*********************************************************************
@@ -530,7 +575,6 @@ void ask_date(int& year, int& month, int& day)
   int curr_year = 1900 + time->tm_year;
   int curr_month = 1+ time->tm_mon;
   int curr_day = time->tm_mday;
-  cout << curr_year << " " << curr_month << " " << curr_day << endl;
   cout << "Enter date in the following: " << endl;
   cout << "Year: ";
   year = get_betwn(curr_year, 9999);
@@ -540,6 +584,13 @@ void ask_date(int& year, int& month, int& day)
   get_day(year, curr_year, month, curr_month, day, curr_day);
 }
 
+/*********************************************************************
+** Function:
+** Description:
+** Parameters:
+** Pre-Conditions:
+** Post-Conditions:
+*********************************************************************/
 void get_month(int year, int curr_year, int& month, int curr_month)
 {
   if(year == curr_year)
@@ -551,6 +602,13 @@ void get_month(int year, int curr_year, int& month, int curr_month)
   }
 }
 
+/*********************************************************************
+** Function:
+** Description:
+** Parameters:
+** Pre-Conditions:
+** Post-Conditions:
+*********************************************************************/
 void get_day(int year, int curr_year, int month, int curr_month, int& day, int curr_day)
 {
   if(month == 2)
@@ -771,8 +829,8 @@ void add_customer_info(struct customer** customers, int n_customer, struct custo
     n_customer++;
     *customers = allocate_customer(n_customer);
     copy_customer(temp, *customers, n_customer-1);
-    free_customer(&temp);
     add_customer(*customers, customer_info, n_customer);
+    free_customer(&temp);
 }
 
 /*********************************************************************
