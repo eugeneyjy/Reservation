@@ -117,7 +117,7 @@ void read_customer_data(struct customer* customers, int n_customer, ifstream& in
 /*********************************************************************
 ** Function: Find the longest name among the customers
 ** Description: Use to find the longest name to determine the size of
-** name column
+                name column
 ** Parameters: struct customer*, int
 ** Pre-Conditions: customer pointer exist and not empty, max index of
 ** customer array match the number of customer
@@ -140,14 +140,14 @@ int longest_name(struct customer* customers, int n_customer)
 }
 
 /*********************************************************************
-** Function: Find the longest name among the customers
-** Description: Use to find the longest name to determine the size of
-** name column
+** Function: Find the longest contact among the customers
+** Description: Use to find the longest contact to determine the size of
+                contact column
 ** Parameters: struct customer*, int
-** Pre-Conditions: customer pointer exist and not empty, max index of
-** customer array match the number of customer
+** Pre-Conditions: Customer pointer exist and not empty, max index of
+                   customer array match the number of customer
 ** Post-Conditions: Calculate and return the number of character of the
-** longest name
+                    longest contact
 *********************************************************************/
 int longest_contact(struct customer* customers, int n_customer)
 {
@@ -164,6 +164,30 @@ int longest_contact(struct customer* customers, int n_customer)
   return max_length;
 }
 
+/*********************************************************************
+** Function: Find the shortest contact among the customers
+** Description: Use to find the shortest contact to determine the
+                spacing of contact heading
+** Parameters: struct customer*, int
+** Pre-Conditions: Customer pointer exist and not empty, max index of
+                   customer array match the number of customer
+** Post-Conditions: Calculate and return the number of character of the
+                    shortest contact
+*********************************************************************/
+int shortest_contact(struct customer* customers, int n_customer)
+{
+  int min_length = 0;
+  int combine_length = 0;
+  for(int i = 0; i < n_customer; i++)
+  {
+    combine_length = customers[i].contact.length();
+    if(combine_length < min_length)
+    {
+      min_length = combine_length;
+    }
+  }
+  return min_length;
+}
 /*********************************************************************
 ** Function: Print a character for N times
 ** Description: Use to format the customer list
@@ -217,7 +241,7 @@ void print_content(struct customer* customers, int n_customer)
     }
     else
     {
-      print_seperate(longest_name_length);
+      print_seperate(longest_name_length, longest_contact_length);
     }
   }
 }
@@ -225,19 +249,23 @@ void print_content(struct customer* customers, int n_customer)
 /*********************************************************************
 ** Function: Print header of the customer list
 ** Description: Use to print out the header columns of the customer list
-** Parameters: int
+** Parameters: struct customer*, int
 ** Pre-Conditions:
 ** Post-Conditions: Printed the header of the customer list
 *********************************************************************/
-void print_heading(int name_length)
+void print_heading(struct customer* customers, int n_customer, int name_length, int contact_length)
 {
-  cout << "┌──────────────────────┬";
-  print_words(name_length, "─");
-  cout << "┬───────────┬───────┬───────┐" << endl;
+  int longest_contact_length = longest_contact(customers, n_customer) + 10;
+  int shortest_contact_length = shortest_contact(customers, n_customer);
+  cout << "+-----------------------";
+  //print_words(name_length, "-");
+  print_words(name_length, "-");
+  print_words(contact_length, "-");
+  cout << "----------------+" << endl;
   cout << "|Date                  |Name";
   print_words(name_length - 4, " ");
-  cout << "|Contact    |Session|Seat(s)|" << endl;
-  print_seperate(name_length);
+  cout << "|Contact" << setw(longest_contact_length - shortest_contact_length) << "|Session|Seat(s)|" << endl;
+  print_seperate(name_length, contact_length);
 }
 
 /*********************************************************************
@@ -247,11 +275,13 @@ void print_heading(int name_length)
 ** Pre-Conditions:
 ** Post-Conditions: Print a seperating row
 *********************************************************************/
-void print_seperate(int name_length)
+void print_seperate(int name_length, int contact_length)
 {
-  cout << "├──────────────────────┼";
-  print_words(name_length, "─");
-  cout << "┼───────────┼───────┼───────┤" << endl;
+  cout << "+----------------------+";
+  print_words(name_length, "-");
+  print_words(contact_length, "-");
+  cout << "+-------+-------¦" << endl;
+  //cout << "+-----------+-------+-------¦" << endl;
 }
 
 /*********************************************************************
@@ -261,11 +291,12 @@ void print_seperate(int name_length)
 ** Pre-Conditions:
 ** Post-Conditions: Print the last row of the table
 *********************************************************************/
-void print_close(int name_length)
+void print_close(int name_length, int contact_length)
 {
-  cout << "└──────────────────────┴";
-  print_words(name_length, "─");
-  cout << "┴───────────┴───────┴───────┘" << endl;
+  cout << "+-----------------------";
+  print_words(name_length, "-");
+  print_words(contact_length, "-");
+  cout << "----------------+" << endl;
 }
 
 /*********************************************************************
@@ -280,16 +311,17 @@ void print_close(int name_length)
 void print_info(struct customer* customers, int n_customer)
 {
   int name_length = longest_name(customers, n_customer) + 1;
-  print_heading(name_length);
+  int contact_length = longest_contact(customers, n_customer) + 1;
+  print_heading(customers, n_customer, name_length, contact_length);
   print_content(customers, n_customer);
-  print_close(name_length);
+  print_close(name_length, contact_length);
 }
 
 /*********************************************************************
 ** Function: Swap two customer information
 ** Description: Use to swap two customer information of index i and
 ** index j in the array
-** Parameters: struct customer*, int, int
+** Parameters: struct customer*, int
 ** Pre-Conditions: customer pointer exist, index i and index j point
 ** to element in the customer pointer (in range)
 ** Post-Conditions: Swap information in customers[i] and customers[j]
@@ -371,7 +403,7 @@ void save_data(struct customer* customers, int n_customer, char* argv[], ofstrea
 ** of customer
 ** Post-Conditions: Print complete customer info in a table
 *********************************************************************/
-void copy_customer(struct customer* source, struct customer* destination, int n_customer)         //qwert
+void copy_customer(struct customer* source, struct customer* destination, int n_customer)
 {
   for(int i = 0; i < n_customer; i++)
   {
@@ -388,7 +420,28 @@ void copy_customer(struct customer* source, struct customer* destination, int n_
 /*********************************************************************
 ** Function:
 ** Description:
-** Parameters: struct customer*, int
+** Parameters:
+** Pre-Conditions:
+** Post-Conditions:
+*********************************************************************/
+bool equal(struct customer lhs, struct customer rhs)
+{
+  if(lhs.name == rhs.name && lhs.contact == rhs.contact && lhs.session == rhs.session
+    && lhs.curr_date.year == rhs.curr_date.year && lhs.curr_date.month == rhs.curr_date.month
+    && lhs.curr_date.day == rhs.curr_date.day && lhs.n_seat == rhs.n_seat)
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+/*********************************************************************
+** Function:
+** Description:
+** Parameters: struct customer*, struct customer, int
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
@@ -399,6 +452,30 @@ void add_customer(struct customer* customers, struct customer customer_info, int
   customers[n_customer - 1].session = customer_info.session;
   customers[n_customer - 1].curr_date = customer_info.curr_date;
   customers[n_customer - 1].n_seat = customer_info.n_seat;
+}
+
+/*********************************************************************
+** Function:
+** Description:
+** Parameters:
+** Pre-Conditions:
+** Post-Conditions:
+*********************************************************************/
+void delete_customer(struct customer* customers, struct customer customer_info, int& n_customer)
+{
+  for(int i = 0; i < n_customer; i++)
+  {
+    if(equal(customers[i], customer_info))
+    {
+      for(int j = i; j < n_customer - 1; j++)
+      {
+        customers[j] = customers[j+1];
+      }
+      n_customer--;
+      cout << "Success!!!" << endl;
+      break;
+    }
+  }
 }
 
 /*********************************************************************
@@ -427,7 +504,7 @@ bool is_int(string num)
 /*********************************************************************
 ** Function: Get string input from customer and change it to int
 ** Description: Change customer string input to int input
-** Parameters: int
+** Parameters: int&
 ** Pre-Conditions: Input is in variable string
 ** Post-Conditions: String input changed to int input
 *********************************************************************/
@@ -469,7 +546,7 @@ int get_betwn(int min, int max)
 /*********************************************************************
 ** Function: Prompt and get options from customer
 ** Description: customer choose his/her options
-** Parameters: int
+** Parameters: int&
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
@@ -486,8 +563,8 @@ void ask_choice(int& choice)
 /*********************************************************************
 ** Function: Input date from customer
 ** Description: Ask date from customer while asking for reservation
-** information
-** Parameters: int
+                information
+** Parameters: int&
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
@@ -498,7 +575,6 @@ void ask_date(int& year, int& month, int& day)
   int curr_year = 1900 + time->tm_year;
   int curr_month = 1+ time->tm_mon;
   int curr_day = time->tm_mday;
-  cout << curr_year << " " << curr_month << " " << curr_day << endl;
   cout << "Enter date in the following: " << endl;
   cout << "Year: ";
   year = get_betwn(curr_year, 9999);
@@ -508,6 +584,13 @@ void ask_date(int& year, int& month, int& day)
   get_day(year, curr_year, month, curr_month, day, curr_day);
 }
 
+/*********************************************************************
+** Function:
+** Description:
+** Parameters:
+** Pre-Conditions:
+** Post-Conditions:
+*********************************************************************/
 void get_month(int year, int curr_year, int& month, int curr_month)
 {
   if(year == curr_year)
@@ -519,6 +602,13 @@ void get_month(int year, int curr_year, int& month, int curr_month)
   }
 }
 
+/*********************************************************************
+** Function:
+** Description:
+** Parameters:
+** Pre-Conditions:
+** Post-Conditions:
+*********************************************************************/
 void get_day(int year, int curr_year, int month, int curr_month, int& day, int curr_day)
 {
   if(month == 2)
@@ -572,8 +662,8 @@ void get_day(int year, int curr_year, int month, int curr_month, int& day, int c
 
 /*********************************************************************
 ** Function: Get input session from customers
-** Description: customers choose a session
-** Parameters: int
+** Description: Customers choose a session
+** Parameters: int&
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
@@ -589,8 +679,8 @@ void ask_session(int& session)
 
 /*********************************************************************
 ** Function: Get number of guests from customers
-** Description: customers enter number of guests
-** Parameters: int
+** Description: Customers enter number of guests
+** Parameters: int&
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
@@ -602,8 +692,8 @@ void ask_guest(int& guest_num)
 
 /*********************************************************************
 ** Function: Get contact from customer
-** Description: customers enter contact
-** Parameters: string
+** Description: Customers enter contact
+** Parameters: string&
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
@@ -615,8 +705,8 @@ void ask_contact(string& contact)
 
 /*********************************************************************
 ** Function: Get customer input for his/her name
-** Description: customer input his/her name
-** Parameters: string
+** Description: Customer input his/her name
+** Parameters: string&
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
@@ -630,7 +720,7 @@ void ask_name(string& name)
 /***************************************************************************
 ** Function: Get a complete information from customer
 ** Description: Get data, session and number of guests from customers
-** Parameters: struct customer*, int
+** Parameters: struct customer*
 ** Pre-Conditions:
 ** Post-Conditions:
 ***************************************************************************/
@@ -664,7 +754,7 @@ void available_msg(bool available, int empty_space)
 /************************************************************************
 ** Function: Run the options choose by customer
 ** Description: Run the options choose by customer in ask_choice function
-** Parameters: struct customer*, int
+** Parameters: struct customer*, int, int&
 ** Pre-Conditions:
 ** Post-Conditions:
 ************************************************************************/
@@ -694,7 +784,7 @@ void run_option(struct customer** customers, int& n_customer, int option)
 /*********************************************************************
 ** Function: Search for availability
 ** Description: Check for availability
-** Parameters: struct customer*, int
+** Parameters: struct customer*, int, int&, struct customer
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
@@ -726,7 +816,7 @@ bool src_available(struct customer* customers, int n_customer, int& empty_space,
 /*********************************************************************
 ** Function: Update customer info to update reservation record
 ** Description: Add customer info
-** Parameters: struct customer*, int
+** Parameters: struct customer*, int, struct customer
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
@@ -739,14 +829,14 @@ void add_customer_info(struct customer** customers, int n_customer, struct custo
     n_customer++;
     *customers = allocate_customer(n_customer);
     copy_customer(temp, *customers, n_customer-1);
-    free_customer(&temp);
     add_customer(*customers, customer_info, n_customer);
+    free_customer(&temp);
 }
 
 /*********************************************************************
 ** Function: Add reservation to update reservation record
 ** Description: Check for available seat(s) to update add reservation
-** Parameters: struct customer*, int
+** Parameters: struct customer*, int&
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
