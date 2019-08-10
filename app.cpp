@@ -10,6 +10,7 @@ int main(int argc, char *argv[])
   char c;
   int n_customer = 0, choice = 0;
   struct customer* customers;
+  struct customer* result;//The result u pass in to the advance search
   ifstream infile;
   ofstream outfile;
   valid_cla(argc, argv);//validation of command line argument
