@@ -495,7 +495,7 @@ void delete_customer(struct customer* customers, struct customer customer_info, 
         customers[j] = customers[j+1];
       }
       n_customer--;
-      i--;
+      break;
     }
   }
 }
@@ -546,7 +546,7 @@ void get_int(int& input)
 
 /*********************************************************************
 ** Function: Validate if input is within range
-** Description: See if input is within string
+** Description: Check if input is within string
 ** Parameters: int
 ** Pre-Conditions:
 ** Post-Conditions:
@@ -575,6 +575,7 @@ int get_betwn(int min, int max)
 void ask_choice(int& choice)
 {
   cout << "Choose an option from above: " << endl;
+<<<<<<< HEAD
   cout << "1. Print reservation record" << endl;
   cout << "2. Search for availability" << endl;
   cout << "3. Update reservation record" << endl;
@@ -583,6 +584,15 @@ void ask_choice(int& choice)
   cout << "6. Save and exit" << endl << endl;
   cout << "Option: ";
   choice = get_betwn(1, 6);
+=======
+  cout << "1. Search for Availability" << endl;
+  cout << "2. Update Reservation Record" << endl;
+  cout << "3. Advanced Search" << endl;
+  cout << "4. Delete Reservation Record" << endl;
+  cout << "5. Save and Exit" << endl << endl;
+  cout << "Option: ";
+  choice = get_betwn(1, 5);
+>>>>>>> 1288442a12d354981c845deb954c179efebde020
 }
 
 /*********************************************************************
@@ -595,10 +605,10 @@ void ask_choice(int& choice)
 *********************************************************************/
 void ask_date(int& year, int& month, int& day)
 {
-  time_t now = time(NULL);
+  time_t now = time(0);
   tm* time = localtime(&now);
   int curr_year = 1900 + time->tm_year;
-  int curr_month = 1+ time->tm_mon;
+  int curr_month = 1 + time->tm_mon;
   int curr_day = time->tm_mday;
   cout << "Enter date in the following: " << endl;
   cout << "Year: ";
@@ -612,7 +622,7 @@ void ask_date(int& year, int& month, int& day)
 /*********************************************************************
 ** Function:
 ** Description:
-** Parameters:
+** Parameters: int, int&
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
@@ -621,7 +631,8 @@ void get_month(int year, int curr_year, int& month, int curr_month)
   if(year == curr_year)
   {
     month = get_betwn(curr_month, 12);
-  }else
+  }
+  else
   {
     month = get_betwn(1, 12);
   }
@@ -783,10 +794,18 @@ void available_msg(bool available, int empty_space)
 ** Pre-Conditions:
 ** Post-Conditions:
 ************************************************************************/
+<<<<<<< HEAD
 void run_option(struct customer** customers, struct customer** results, int& n_customer, int& matches, int& r_num, int option)
+=======
+void run_option (struct customer** customers, int& n_customer, int option)
+>>>>>>> 1288442a12d354981c845deb954c179efebde020
 {
   int empty_space;
   bool availability;
+  struct customer* result;
+  struct customer* original;
+  struct customer* erase;
+  struct customer* remained;
   struct customer customer_info;
   if(option == 1)
   {
@@ -832,6 +851,14 @@ void run_option(struct customer** customers, struct customer** results, int& n_c
     cout << "\nFiltering reservation record..." << endl;
     advanced_search(results, *customers, n_customer, matches);
   }
+  else if(option == 3)
+  {
+    advanced_search(&result, *customers, n_customer);
+  }
+  else if (option == 4)
+  {
+    delete_reservation(&original, &erase, &remained, *customers, n_customer);
+  }
 }
 
 /*********************************************************************
@@ -866,6 +893,7 @@ bool src_available(struct customer* customers, int n_customer, int& empty_space,
   }
 }
 
+<<<<<<< HEAD
 /*********************************************************************
 ** Function:
 ** Description:
@@ -903,6 +931,8 @@ void advanced_search(struct customer** results, struct customer* customers, int 
 }
 
 
+=======
+>>>>>>> 1288442a12d354981c845deb954c179efebde020
 /*********************************************************************
 ** Function: Update customer info to update reservation record
 ** Description: Add customer info
@@ -971,6 +1001,7 @@ void print_session()
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
+<<<<<<< HEAD
 void delete_reservation(struct customer* customers, int& n_customer)
 {
   struct customer* confirm_customer;
@@ -1004,6 +1035,24 @@ void delete_reservation(struct customer* customers, int& n_customer)
   {
     cout << "Reservation number not found..." << endl;
   }
+=======
+void advanced_search(struct customer** result, struct customer* customers, int n_customer)
+{
+  string search;
+  int match = n_customer;
+  cout << "Search : " << endl;
+  getline(cin, search);
+  *result = allocate_customer(n_customer);
+  copy_customer(customers,*result, n_customer);
+  for (int i = 0; i < n_customer; i++)
+  {
+    if (customers[i].name.find(search) == string::npos && customers[i].contact.find(search) == string::npos)
+    {
+      delete_customer(*result, customers[i], match);
+    }
+  }
+  print_info(*result, match);
+>>>>>>> 1288442a12d354981c845deb954c179efebde020
 }
 
 /*********************************************************************
@@ -1013,6 +1062,7 @@ void delete_reservation(struct customer* customers, int& n_customer)
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
+<<<<<<< HEAD
 void get_r_num(int& input)
 {
   string reservation;
@@ -1042,3 +1092,50 @@ void get_r_num(int& input)
     }
   }while(flag == true);
 }
+=======
+void delete_reservation(struct customer* *original, struct customer* *erase, struct customer* *remained, struct customer* customers, int n_customer)
+{
+  string name;
+  char decision;
+  int match = n_customer, n_customer2 = n_customer, choice, sessions;
+  cout << "Name : " << endl;
+  getline(cin, name);
+  *original = allocate_customer(n_customer);
+  *erase = allocate_customer(n_customer);
+  *remained = allocate_customer(n_customer);
+  copy_customer(customers,*original, n_customer);
+  copy_customer(customers,*erase, n_customer);
+  copy_customer(customers,*remained, n_customer);
+  for (int i = 0; i < n_customer; i++)
+  {
+    if (customers[i].name.find(name) == string::npos && customers[i].contact.find(name) == string::npos)
+    {
+      delete_customer(*erase, customers[i], match);
+    }
+  }
+  print_info(*erase, match);
+  /*
+  cout << "How many session(s) do you want to delete? ";
+  cin >> choice;
+  cout << "Which session(s) do you want to delete? ";
+  cin >> sessions;
+  */
+  cout << "Are you sure you want to delete? " ;
+  cin >> decision;
+  if (decision == 'Y')
+  {
+    for (int i = 0; i < n_customer; i++)
+    {
+      if (customers[i].name.find(name) != string::npos || customers[i].contact.find(name) != string::npos)
+      {
+        delete_customer(*remained, customers[i], n_customer2);
+      }
+    }
+    print_info(*remained, n_customer2);
+  }
+  else if (decision == 'N')
+  {
+    print_info(*original, n_customer);
+  }
+};
+>>>>>>> 1288442a12d354981c845deb954c179efebde020

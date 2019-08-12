@@ -58,9 +58,17 @@ void ask_info(struct customer &customer_info);
 void run_option(struct customer** customers, struct customer** results, int &n_customer, int& matches, int& r_num, int option);
 void available_msg(bool result, int empty_space);
 bool src_available(struct customer* customers, int n_customer, int &empty_space, struct customer customer_info);
+<<<<<<< HEAD
 void advanced_search(struct customer** results, struct customer* customers, int n_customer, int& matches);
 void add_customer_info(struct customer** customers, int n_customer, struct customer customer_info, int& r_num);
 void add_reserve(struct customer** customers, int& n_customer, struct customer customer_info, int& r_num);
 void delete_reservation(struct customer* customers, int& n_customer);
 void get_r_num(int& input);
+=======
+void advanced_search(struct customer* *result, struct customer* customers, int n_customer);
+void add_customer_info(struct customer* *customers, int n_customer, struct customer customer_info);
+void add_reserve(struct customer* *customers, int &n_customer, struct customer customer_info);
+void delete_reservation(struct customer* *original, struct customer* *erase, struct customer* *remained, struct customer* customers, int n_customer);
+
+>>>>>>> 1288442a12d354981c845deb954c179efebde020
 #endif
