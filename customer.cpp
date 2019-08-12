@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <cstring>
+#include <algorithm>
 #include "customer.hpp"
 
 using namespace std;
@@ -89,7 +90,7 @@ void read_customer_data(struct customer* customers, int n_customer, ifstream& in
     }
     l = 0;
     getline(infile, line);
-    for(int i = 0; i < 7; i++)
+    for(int i = 0; i < 8; i++)
     {
       found = line.find(",");
       for (int k = 0; k < found; k++)
@@ -110,6 +111,7 @@ void read_customer_data(struct customer* customers, int n_customer, ifstream& in
     customers[j].curr_date.month = stoi(testing[4]);
     customers[j].curr_date.day = stoi(testing[5]);
     customers[j].n_seat = stoi(testing[6]);
+    customers[j].r_num = stoi(testing[7]);
     j++;
   }
 }
@@ -223,8 +225,9 @@ void print_content(struct customer* customers, int n_customer)
     contact_length = customers[i].contact.length();
     name_length = customers[i].name.length();
     day_of_week = DAY_IN_WORD[day_of_the_week (customers[i].curr_date.year, customers[i].curr_date.month, customers[i].curr_date.day) ];
+    cout << "|R" << setfill('0') << setw(4) << customers[i].r_num;
     //print date info
-    cout << "|" << setfill('0') << setw(2) << customers[i].curr_date.day << "/" << setfill('0') << setw(2) << customers[i].curr_date.month << "/" << customers[i].curr_date.year << "(" << day_of_week << ")" << setfill(' ') << setw(11-day_of_week.length()) << "|";
+    cout << " |" << setfill('0') << setw(2) << customers[i].curr_date.day << "/" << setfill('0') << setw(2) << customers[i].curr_date.month << "/" << customers[i].curr_date.year << "(" << day_of_week << ")" << setfill(' ') << setw(11-day_of_week.length()) << "|";
     //set setfill( back to space)
     cout << setfill(' ');
     //print name
@@ -257,12 +260,28 @@ void print_heading(struct customer* customers, int n_customer, int name_length, 
 {
   int longest_contact_length = longest_contact(customers, n_customer) + 10;
   int shortest_contact_length = shortest_contact(customers, n_customer);
-  cout << "+-----------------------";
+  cout << "+------";
+  cout << "+----------------------+";
   //print_words(name_length, "-");
-  print_words(name_length, "-");
-  print_words(contact_length, "-");
-  cout << "----------------+" << endl;
-  cout << "|Date                  |Name";
+  if(name_length > 4)
+  {
+    print_words(name_length, "-");
+  }
+  else
+  {
+    print_words(3, "-");
+  }
+  cout << "+";
+  if(contact_length > 7)
+  {
+    print_words(contact_length-1, "-");
+  }
+  else
+  {
+    print_words(7, "-");
+  }
+  cout << "+-------+-------+" << endl;
+  cout << "|No.   |Date                  |Name";
   print_words(name_length - 4, " ");
   cout << "|Contact" << setw(longest_contact_length - shortest_contact_length) << "|Session|Seat(s)|" << endl;
   print_seperate(name_length, contact_length);
@@ -277,9 +296,10 @@ void print_heading(struct customer* customers, int n_customer, int name_length, 
 *********************************************************************/
 void print_seperate(int name_length, int contact_length)
 {
-  cout << "+----------------------+";
+  cout << "+------+----------------------+";
   print_words(name_length, "-");
-  print_words(contact_length, "-");
+  cout << "+";
+  print_words(contact_length-1, "-");
   cout << "+-------+-------¦" << endl;
   //cout << "+-----------+-------+-------¦" << endl;
 }
@@ -293,7 +313,7 @@ void print_seperate(int name_length, int contact_length)
 *********************************************************************/
 void print_close(int name_length, int contact_length)
 {
-  cout << "+-----------------------";
+  cout << "+------+-----------------------";
   print_words(name_length, "-");
   print_words(contact_length, "-");
   cout << "----------------+" << endl;
@@ -375,7 +395,7 @@ void sort_by_date(struct customer* customers, int n_customer)
 ** index match with number of customers
 ** Post-Conditions: Write sorted customers data in to text file
 *********************************************************************/
-void save_data(struct customer* customers, int n_customer, char* argv[], ofstream& outfile)
+void save_data(struct customer* customers, int n_customer, int r_num, char* argv[], ofstream& outfile)
 {
   outfile.open(argv[1]);
   if(outfile.fail())
@@ -385,12 +405,13 @@ void save_data(struct customer* customers, int n_customer, char* argv[], ofstrea
   }
   sort_by_date(customers, n_customer);
   outfile << n_customer << endl;
+  outfile <<  r_num << endl;
   for(int i = 0; i < n_customer; i++)
   {
     outfile << customers[i].name << "," << customers[i].session << ",";
     outfile << customers[i].contact << "," << customers[i].curr_date.year << ",";
     outfile << customers[i].curr_date.month << "," << customers[i].curr_date.day << ",";
-    outfile << customers[i].n_seat << "," << endl;
+    outfile << customers[i].n_seat << "," << customers[i].r_num << "," << endl;
   }
 }
 
@@ -414,6 +435,7 @@ void copy_customer(struct customer* source, struct customer* destination, int n_
     destination[i].curr_date.month = source[i].curr_date.month;
     destination[i].curr_date.day = source[i].curr_date.day;
     destination[i].n_seat = source[i].n_seat;
+    destination[i].r_num = source[i].r_num;
   }
 }
 
@@ -445,13 +467,14 @@ bool equal(struct customer lhs, struct customer rhs)
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
-void add_customer(struct customer* customers, struct customer customer_info, int n_customer)
+void add_customer(struct customer* customers, struct customer customer_info, int n_customer, int& r_num)
 {
   customers[n_customer - 1].name = customer_info.name;
   customers[n_customer - 1].contact = customer_info.contact;
   customers[n_customer - 1].session = customer_info.session;
   customers[n_customer - 1].curr_date = customer_info.curr_date;
   customers[n_customer - 1].n_seat = customer_info.n_seat;
+  customers[n_customer - 1].r_num = ++r_num;
 }
 
 /*********************************************************************
@@ -552,11 +575,14 @@ int get_betwn(int min, int max)
 void ask_choice(int& choice)
 {
   cout << "Choose an option from above: " << endl;
-  cout << "1. Search for availability" << endl;
-  cout << "2. Update reservation record" << endl;
-  cout << "3. Save and exit" << endl << endl;
+  cout << "1. Print reservation record" << endl;
+  cout << "2. Search for availability" << endl;
+  cout << "3. Update reservation record" << endl;
+  cout << "4. Delete reservation record" << endl;
+  cout << "5. Filter reservation record" << endl;
+  cout << "6. Save and exit" << endl << endl;
   cout << "Option: ";
-  choice = get_betwn(1, 3);
+  choice = get_betwn(1, 6);
 }
 
 /*********************************************************************
@@ -757,26 +783,54 @@ void available_msg(bool available, int empty_space)
 ** Pre-Conditions:
 ** Post-Conditions:
 ************************************************************************/
-void run_option(struct customer** customers, int& n_customer, int option)
+void run_option(struct customer** customers, struct customer** results, int& n_customer, int& matches, int& r_num, int option)
 {
   int empty_space;
   bool availability;
   struct customer customer_info;
   if(option == 1)
   {
+    print_session();
+    if(n_customer > 0)
+    {
+      sort_by_date(*customers, n_customer);
+      print_info(*customers, n_customer);
+    }
+    else
+    {
+      cout << "No reservation record are found..." << endl;
+    }
+  }
+  else if(option == 2)
+  {
     cout << "\nSearching for availability..." << endl;
     ask_info(customer_info);
     availability = src_available(*customers, n_customer, empty_space, customer_info);
     available_msg(availability, empty_space);
   }
-  else if(option == 2)
+  else if(option == 3)
   {
     struct customer* temp;
     cout << "\nUpdating reservation record..." << endl;
     ask_info(customer_info);
     ask_name(customer_info.name);
     ask_contact(customer_info.contact);
-    add_reserve(customers, n_customer, customer_info);
+    add_reserve(customers, n_customer, customer_info, r_num);
+  }
+  else if(option == 4)
+  {
+    cout << "\nDeleting reservation record..." << endl;
+    delete_reservation(*customers, n_customer);
+  }
+  else if(option == 5)
+  {
+    if(matches > 0)
+    {
+      free_customer(results);
+      matches = 0;
+    }
+    cout << "\nFiltering reservation record..." << endl;
+    advanced_search(results, *customers, n_customer, matches);
   }
 }
 
@@ -812,22 +866,40 @@ bool src_available(struct customer* customers, int n_customer, int& empty_space,
   }
 }
 
+/*********************************************************************
+** Function:
+** Description:
+** Parameters:
+** Pre-Conditions:
+** Post-Conditions:
+*********************************************************************/
 void advanced_search(struct customer** results, struct customer* customers, int n_customer, int& matches)
 {
-  string search;
+  string search, name, contact;
   matches = n_customer;
   *results = allocate_customer(n_customer);
   copy_customer(customers, *results, n_customer);
-  cout << "Search: ";
+  cout << "Searching key word: ";
   getline(cin, search);
+  transform(search.begin(), search.end(), search.begin(), ::tolower);
   for(int i = 0; i < n_customer; i++)
   {
-    if(customers[i].name.find(search) == string::npos && customers[i].contact.find(search) == string::npos)
+    name = customers[i].name;
+    transform(name.begin(), name.end(), name.begin(), ::tolower);
+    contact = customers[i].contact;
+    if(name.find(search) == string::npos && contact.find(search) == string::npos)
     {
       delete_customer(*results, customers[i], matches);
     }
   }
-  print_info(*results, matches);
+  if(matches > 0)
+  {
+    print_info(*results, matches);
+  }
+  else
+  {
+    cout << "Match not found..." << endl;
+  }
 }
 
 
@@ -838,7 +910,7 @@ void advanced_search(struct customer** results, struct customer* customers, int 
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
-void add_customer_info(struct customer** customers, int n_customer, struct customer customer_info)
+void add_customer_info(struct customer** customers, int n_customer, struct customer customer_info, int& r_num)
 {
     struct customer *temp;
     temp = allocate_customer(n_customer);
@@ -847,7 +919,7 @@ void add_customer_info(struct customer** customers, int n_customer, struct custo
     n_customer++;
     *customers = allocate_customer(n_customer);
     copy_customer(temp, *customers, n_customer-1);
-    add_customer(*customers, customer_info, n_customer);
+    add_customer(*customers, customer_info, n_customer, r_num);
     free_customer(&temp);
 }
 
@@ -858,7 +930,7 @@ void add_customer_info(struct customer** customers, int n_customer, struct custo
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
-void add_reserve(struct customer** customers, int& n_customer, struct customer customer_info)
+void add_reserve(struct customer** customers, int& n_customer, struct customer customer_info, int& r_num)
 {
   int empty_space;
   bool available = src_available(*customers, n_customer, empty_space, customer_info);
@@ -870,7 +942,7 @@ void add_reserve(struct customer** customers, int& n_customer, struct customer c
   }
   else
   {
-    add_customer_info(customers, n_customer, customer_info);
+    add_customer_info(customers, n_customer, customer_info, r_num);
     n_customer++;
     cout << "Update Success!" << endl;
   }
@@ -890,4 +962,83 @@ void print_session()
   cout << "12:30 P.M. - 02:00 P.M." << endl;
   cout << "05:00 P.M. - 06:30 P.M." << endl;
   cout << "06:30 P.M. - 08:00 P.M." << endl;
+}
+
+/*********************************************************************
+** Function:
+** Description:
+** Parameters:
+** Pre-Conditions:
+** Post-Conditions:
+*********************************************************************/
+void delete_reservation(struct customer* customers, int& n_customer)
+{
+  struct customer* confirm_customer;
+  char decision;
+  int match = n_customer, reserve_num = 0;
+  confirm_customer = allocate_customer(n_customer);
+  copy_customer(customers, confirm_customer, n_customer);
+  cout << "Reservation No.: ";
+  get_r_num(reserve_num);
+  for(int i = 0; i < n_customer; i++)
+  {
+    if(customers[i].r_num != reserve_num)
+    {
+      delete_customer(confirm_customer, customers[i], match);
+    }
+  }
+  if(match > 0)
+  {
+    print_info(confirm_customer, match);
+    cout << "Are you sure you want to delete? (Y/N)";
+    cin >> decision;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    if(decision == 'Y' || decision == 'y')
+    {
+      delete_customer(customers, confirm_customer[0], n_customer);
+      cout << "Successfully deleted " << "R" << setfill('0') << setw(4);
+      cout << confirm_customer[0].r_num << " reservation..." << endl;
+    }
+  }
+  else
+  {
+    cout << "Reservation number not found..." << endl;
+  }
+}
+
+/*********************************************************************
+** Function:
+** Description:
+** Parameters:
+** Pre-Conditions:
+** Post-Conditions:
+*********************************************************************/
+void get_r_num(int& input)
+{
+  string reservation;
+  bool flag = true;
+  do
+  {
+    getline(cin, reservation);
+    if(is_int(reservation))
+    {
+      input = stoi(reservation);
+      flag = false;
+    }
+    else if(reservation[0] == 'R' || reservation[0] == 'r')
+    {
+      reservation.erase(0, 1);
+      if(is_int(reservation))
+      {
+        input = stoi(reservation);
+        flag = false;
+      }
+    }
+    if(flag == true)
+    {
+      cout << "Please enter reservation number in right format." << endl;
+      cout << "For example: R1234 or 1234" << endl;
+      cout << "Reservation No.: ";
+    }
+  }while(flag == true);
 }
