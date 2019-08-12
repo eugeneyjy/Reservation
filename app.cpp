@@ -8,9 +8,9 @@ using namespace std;
 int main(int argc, char *argv[])
 {
   char c;
-  int n_customer = 0, choice = 0 , result_count = 0;
+  int n_customer = 0, choice = 0;
   struct customer* customers;
-  struct customer* result;//The result u pass in to the advance search
+  struct customer* result;
   ifstream infile;
   ofstream outfile;
   valid_cla(argc, argv);//validation of command line argument
@@ -28,12 +28,8 @@ int main(int argc, char *argv[])
     print_info(customers, n_customer);
     ask_choice(choice);
     run_option(&customers, n_customer, choice);
-  } while(choice != 3);
+  } while(choice != 5);
   save_data(customers, n_customer, argv, outfile);
   free_customer(&customers);
-  if(result_count > 0)
-  {
-    free_customer(&result);
-  }
   return 0;
 }
