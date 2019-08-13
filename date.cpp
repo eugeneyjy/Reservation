@@ -7,8 +7,8 @@ using namespace std;
 
 /*********************************************************************
 ** Function: Get dates from file which is entered by user in file
-** Description:
-** Parameters: struct date, ifstream
+** Description: Get the exact date from customer
+** Parameters: struct date&, ifstream&
 ** Pre-Conditions:
 ** Post-Conditions:
 *********************************************************************/
@@ -18,22 +18,23 @@ void read_date_data(struct date& curr_date, ifstream& infile)
   infile >> curr_date.year >> curr_date.month >> curr_date.day;
 }
 
-/*************************************************************************
-** Function: To obtain the first and last two digits of the year entered
-** Description:
-** Parameters: int
+/***************************************************************************
+** Function: To obtain the first two and last two digits of the year entered
+** Description: Extract first two and last two digits of the year entered
+                to calculate day of the week based on date
+** Parameters: int, int&
 ** Pre-Conditions:
 ** Post-Conditions:
-*************************************************************************/
+***************************************************************************/
 
 void seperate_year(int year, int& first_two, int& last_two)
 {
-  first_two = year/100;
-  last_two = year%100;
+  first_two = year / 100;
+  last_two = year % 100;
 }
 
 /*************************************************************************
-** Function: To calculate day of the week
+** Function: To calculate day of the week based on date
 ** Description:
 ** Parameters: int
 ** Pre-Conditions:
@@ -50,7 +51,7 @@ int day_of_the_week(int param_year, int param_month, int param_day)
   }
   seperate_year(param_year, year_first_two, year_last_two);
   //Formula to calculate day of the week based on date
-  day = param_day + floor((13 * month - 1) /5) + year_last_two + floor(year_last_two /4) + floor(year_first_two /4) - 2 * year_first_two;
+  day = param_day + floor((13.0 * month - 1.0) /5.0) + year_last_two + floor(year_last_two /4.0) + floor(year_first_two /4.0) - 2.0 * year_first_two;
   day = day % 7;
   if(day < 0)
   {
