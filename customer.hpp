@@ -4,6 +4,7 @@
 ** Date: 07/08/2019
 ** Description: customer structure header file
 *********************************************************************/
+
 #ifndef __CUSTOMER_HPP
 #define __CUSTOMER_HPP
 
@@ -15,10 +16,10 @@ struct customer
 {
   string name;
   string contact;
-  int session;
+  int session = 0;
   struct date curr_date;
-  int n_seat;
-  int r_num;
+  int n_seat = 0;
+  int r_num = 0;
 };
 
 void valid_cla(int argc, char *argv[]);
@@ -44,11 +45,14 @@ bool equal(struct customer lhs, struct customer rhs);
 void add_customer(struct customer* customers, struct customer customer_info, int n_customer, int& r_num);
 void delete_customer(struct customer* customers, struct customer customer_info, int& n_customer);
 bool is_int(string num);
+bool is_decision(string str);
+void get_char(char *decision);
 int get_betwn(int min, int max);
 void get_choice(int &choice);
 void get_month(int year, int curr_year, int& month, int curr_month);
 void get_day(int year, int curr_year, int month, int curr_month, int& day, int curr_day);
 void ask_choice(int &choice);
+void ask_choice_update(int &choice);
 void ask_date(int &year, int &month, int &day);
 void ask_session(int &session);
 void ask_guest(int &guest_num);

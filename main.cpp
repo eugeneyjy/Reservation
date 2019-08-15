@@ -13,7 +13,6 @@ int main(int argc, char* argv[])
 	struct customer* result;//The result u pass in to the advance search
 	ifstream infile;
 	ofstream outfile;
-	//valid_cla(argc, argv);//validation of command line argument
 	open_file(infile, argv);//open customer info file
 	infile >> n_customer;
 	infile >> r_num;
@@ -33,14 +32,12 @@ int main(int argc, char* argv[])
 		ask_choice(choice);
 		run_option(&customers, &result, n_customer, result_count, r_num, choice);
 	} 
-	while (choice != 6);
-	save_data(customers, n_customer, r_num,argv, outfile);
+	while (choice != 5);
+	save_data(customers, n_customer, r_num, argv, outfile);
 	free_customer(&customers);
 	if (result_count > 0)
 	{
 		free_customer(&result);
 	}
-
-	system("pause");
 	return 0;
 }
