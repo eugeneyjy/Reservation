@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -535,18 +534,18 @@ void get_int(int& input)
 ** Pre-Conditions: Input is in variable string
 ** Post-Conditions: String input changed to character input
 *********************************************************************/
-void get_char(char *decision)
+void get_char(char& decision)
 {
   string str;
   do
   {
     getline(cin, str);
-    if(str.length() != 1 && ((str.find("Y") == string::npos) || (str.find("y") == string::npos)) && ((str.find("N") == string::npos) || (str.find("n") == string::npos)))
+    if(str.length() != 1 || ((str.find("Y") == string::npos) && (str.find("y") == string::npos) && (str.find("N") == string::npos) && (str.find("n") == string::npos)))
     {
       cout << "Please enter (Y/y) or (N/n) : ";
     }
-  } while(str.length() != 1 && ((str.find("Y") == string::npos) || (str.find("y") == string::npos)) && ((str.find("N") == string::npos) || (str.find("n") == string::npos)));
-  copy(str.begin(), str.end(), decision);
+  } while(str.length() != 1 || ((str.find("Y") == string::npos) && (str.find("y") == string::npos) && (str.find("N") == string::npos) && (str.find("n") == string::npos)));
+  decision = str[0];
 }
 
 /*********************************************************************
@@ -1011,7 +1010,7 @@ void print_session()
 void delete_reservation(struct customer* customers, int& n_customer)
 {
   struct customer* confirm_customer;
-  char decision[1];
+  char decision;
   int match = n_customer, reserve_num = 0;
   confirm_customer = allocate_customer(n_customer);
   copy_customer(customers, confirm_customer, n_customer);
@@ -1029,14 +1028,13 @@ void delete_reservation(struct customer* customers, int& n_customer)
     print_info(confirm_customer, match);
     cout << "Are you sure you want to delete? (Y/y) or (N/n) : ";
     get_char(decision);
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    if((decision[0] == 'Y') || (decision[0] == 'y'))
+    if((decision == 'Y') || (decision == 'y'))
     {
       delete_customer(customers, confirm_customer[0], n_customer);
       cout << "Successfully deleted " << "R" << setfill('0') << setw(4);
       cout << confirm_customer[0].r_num << " reservation..." << endl;
     }
-    else if ((decision[0] == 'N') || (decision[0] == 'n'))
+    else if ((decision == 'N') || (decision == 'n'))
 	{
 	  cout << "Cancelling reservation record..." << endl;
       cout << "Delete reservation record cancelled" << endl;
