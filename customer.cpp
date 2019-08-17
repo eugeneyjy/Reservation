@@ -1085,7 +1085,7 @@ void get_r_num(int& input)
 }
 
 /*********************************************************************
-** Function:
+** Function: Find customer
 ** Description:
 ** Parameters:
 ** Pre-Conditions:
