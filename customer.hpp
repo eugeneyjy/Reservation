@@ -53,6 +53,7 @@ void get_month(int year, int curr_year, int& month, int curr_month);
 void get_day(int year, int curr_year, int month, int curr_month, int& day, int curr_day);
 void ask_choice(int &choice);
 void ask_choice_update(int &choice);
+void ask_choice_change(int& choice);
 void ask_date(int &year, int &month, int &day);
 void ask_session(int &session);
 void ask_guest(int &guest_num);
