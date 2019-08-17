@@ -537,14 +537,22 @@ void get_int(int& input)
 void get_char(char& decision)
 {
   string str;
+  bool flag = false;
   do
   {
     getline(cin, str);
-    if(str.length() != 1 || ((str.find("Y") == string::npos) && (str.find("y") == string::npos) && (str.find("N") == string::npos) && (str.find("n") == string::npos)))
+    if(str.length() == 1)
+    {
+      if(str[0] == 'Y' || str[0] == 'y' || str[0] == 'N' || str[0] == 'n')
+      {
+        flag = true;
+      }
+    }
+    if(flag == false)
     {
       cout << "Please enter (Y/y) or (N/n) : ";
     }
-  } while(str.length() != 1 || ((str.find("Y") == string::npos) && (str.find("y") == string::npos) && (str.find("N") == string::npos) && (str.find("n") == string::npos)));
+  }while(flag == false);
   decision = str[0];
 }
 
@@ -835,8 +843,6 @@ void run_option(struct customer** customers, struct customer** results, int& n_c
     ask_choice_update(option);
     if (option == 1)
     {
-      struct customer* temp;
-
       ask_info(customer_info);
       ask_name(customer_info.name);
       ask_contact(customer_info.contact);
@@ -987,6 +993,7 @@ void add_reserve(struct customer** customers, int& n_customer, struct customer c
 *********************************************************************/
 void print_session()
 {
+  setfill(' ');
   cout << setw(50) << "\t       __       __        __\n";
 	cout << setw(80) << "\t      /  \\    /  \\ ____ |  | ____  ____    _____   ____ \n";
 	cout << setw(80) << "\t      \\   \\/\\/   // __ \\|  |/ ___\\/  _ \\  /     \\ / __ \\\n";
@@ -1009,47 +1016,34 @@ void print_session()
 *********************************************************************/
 void delete_reservation(struct customer* customers, int& n_customer)
 {
-  struct customer* confirm_customer;
+  struct customer confirm_customer;
   char decision;
-  int match = n_customer, reserve_num = 0;
-  confirm_customer = allocate_customer(n_customer);
-  copy_customer(customers, confirm_customer, n_customer);
+  int reserve_num = 0;
+  bool exist = false;
   cout << "Reservation No.: ";
-  get_r_num(reserve_num);
-  for(int i = 0; i < n_customer; i++)
+  do
   {
-    if(customers[i].r_num != reserve_num)
-    {
-      delete_customer(confirm_customer, customers[i], match);
-    }
-  }
-  if(match > 0)
-  {
-    print_info(confirm_customer, match);
-    cout << "Are you sure you want to delete? (Y/y) or (N/n) : ";
-    get_char(decision);
-    if((decision == 'Y') || (decision == 'y'))
-    {
-      delete_customer(customers, confirm_customer[0], n_customer);
-      cout << "Successfully deleted " << "R" << setfill('0') << setw(4);
-      cout << confirm_customer[0].r_num << " reservation..." << endl;
-    }
-    else if ((decision == 'N') || (decision == 'n'))
-	{
-	  cout << "Cancelling reservation record..." << endl;
-      cout << "Delete reservation record cancelled" << endl;
-    }
-  }
-  /*
-  else if ()
-  {
-    get_betwn(reserve_num);
     get_r_num(reserve_num);
-  }
-  */
-  else
+    exist = find_r_customer(customers, confirm_customer, n_customer, reserve_num);
+    if(!exist)
+    {
+      cout << "Reservation number not found..." << endl;
+      cout << "Please enter a valid Reservation No.: ";
+    }
+  }while(exist == false);
+  print_info(&confirm_customer, 1);
+  cout << "Are you sure you want to delete? (Y/y) or (N/n) : ";
+  get_char(decision);
+  if((decision == 'Y') || (decision == 'y'))
   {
-    cout << "Reservation number not found..." << endl;
+    delete_customer(customers, confirm_customer, n_customer);
+    cout << "Successfully deleted " << "R" << setfill('0') << setw(4);
+    cout << confirm_customer.r_num << " reservation..." << endl;
+  }
+  else if ((decision == 'N') || (decision == 'n'))
+	{
+    cout << "Cancelling reservation record..." << endl;
+    cout << "Delete reservation record cancelled" << endl;
   }
 }
 
@@ -1088,4 +1082,34 @@ void get_r_num(int& input)
       cout << "Reservation No.: ";
     }
   }while(flag == true);
+}
+
+/*********************************************************************
+** Function:
+** Description:
+** Parameters:
+** Pre-Conditions:
+** Post-Conditions:
+*********************************************************************/
+bool find_r_customer(struct customer* customers, struct customer& result, int n_customer, int r_num)
+{
+  struct customer* temp;
+  int match = n_customer;
+  temp = allocate_customer(n_customer);
+  copy_customer(customers, temp, n_customer);
+  for(int i = 0; i < n_customer; i++)
+  {
+    if(customers[i].r_num != r_num)
+    {
+      delete_customer(temp, customers[i], match);
+    }
+  }
+  if(match > 0)
+  {
+    result = temp[0];
+    free_customer(&temp);
+    return true;
+  }
+  free_customer(&temp);
+  return false;
 }

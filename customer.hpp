@@ -67,4 +67,6 @@ void add_customer_info(struct customer** customers, int n_customer, struct custo
 void add_reserve(struct customer** customers, int& n_customer, struct customer customer_info, int& r_num);
 void delete_reservation(struct customer* customers, int& n_customer);
 void get_r_num(int& input);
+bool find_r_customer(struct customer* customers, struct customer& result, int n_customer, int r_num);
+
 #endif
