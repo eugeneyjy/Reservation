@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -836,7 +837,7 @@ void run_option(struct customer** customers, struct customer** results, int& n_c
     if (option == 1)
     {
       struct customer* temp;
-      
+
       ask_info(customer_info);
       ask_name(customer_info.name);
       ask_contact(customer_info.contact);
