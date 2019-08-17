@@ -540,17 +540,17 @@ void get_char(char *decision)
   do
   {
     getline(cin, str);
-    if(str.length() != 1 && !(str.find("Y")) || !(str.find("y")) && !(str.find("N")) || !(str.find("n")) )
+    if(str.length() != 1 && ((str.find("Y") == string::npos) || (str.find("y") == string::npos)) && ((str.find("N") == string::npos) || (str.find("n") == string::npos)))
     {
-      cout << "Please enter (Y/y) or (N/n)." << endl;
+      cout << "Please enter (Y/y) or (N/n) : ";
     }
-  } while(str.length() != 1 && !(str.find("Y")) || !(str.find("y")) && !(str.find("N")) || !(str.find("n")) );
+  } while(str.length() != 1 && ((str.find("Y") == string::npos) || (str.find("y") == string::npos)) && ((str.find("N") == string::npos) || (str.find("n") == string::npos)));
   copy(str.begin(), str.end(), decision);
 }
 
 /*********************************************************************
 ** Function: Validate if input is within range
-** Description: See if input is within string
+** Description: Check if input is within range
 ** Parameters: int
 ** Pre-Conditions:
 ** Post-Conditions:
@@ -987,6 +987,12 @@ void add_reserve(struct customer** customers, int& n_customer, struct customer c
 *********************************************************************/
 void print_session()
 {
+  cout << setw(50) << "\t       __       __        __\n";
+	cout << setw(80) << "\t      /  \\    /  \\ ____ |  | ____  ____    _____   ____ \n";
+	cout << setw(80) << "\t      \\   \\/\\/   // __ \\|  |/ ___\\/  _ \\  /     \\ / __ \\\n";
+	cout << setw(80) << "\t       \\        /|  ___/|  |  \\__(  <_> )|  | |  \|  ___/\n";
+	cout << setw(80) << "\t        \\__/\\__/  \\____\\|__|\\_____>____/ |__|_|__|\\____\\\n";
+	cout << endl;
   cout << "--Session Time Table--" << endl;
   cout << "11:00 A.M. - 12:30 A.M." << endl;
   cout << "12:30 P.M. - 02:00 P.M." << endl;
@@ -1021,7 +1027,6 @@ void delete_reservation(struct customer* customers, int& n_customer)
   {
     print_info(confirm_customer, match);
     cout << "Are you sure you want to delete? (Y/y) or (N/n) : ";
-    cin >> decision[0];
     get_char(decision);
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     if((decision[0] == 'Y') || (decision[0] == 'y'))
@@ -1030,7 +1035,19 @@ void delete_reservation(struct customer* customers, int& n_customer)
       cout << "Successfully deleted " << "R" << setfill('0') << setw(4);
       cout << confirm_customer[0].r_num << " reservation..." << endl;
     }
+    else if ((decision[0] == 'N') || (decision[0] == 'n'))
+	{
+	  cout << "Cancelling reservation record..." << endl;
+      cout << "Delete reservation record cancelled" << endl;
+    }
   }
+  /*
+  else if ()
+  {
+    get_betwn(reserve_num);
+    get_r_num(reserve_num);
+  }
+  */
   else
   {
     cout << "Reservation number not found..." << endl;
