@@ -28,8 +28,8 @@ int main(int argc, char* argv[])
 	}
 	do
 	{
-		choice = 0;
 		ask_choice(choice);
+		system("cls");
 		run_option(&customers, &result, n_customer, result_count, r_num, choice);
 	} 
 	while (choice != 5);
