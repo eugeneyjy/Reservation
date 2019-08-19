@@ -53,21 +53,24 @@ void get_month(int year, int curr_year, int& month, int curr_month);
 void get_day(int year, int curr_year, int month, int curr_month, int& day, int curr_day);
 void ask_choice(int &choice);
 void ask_choice_update(int &choice);
-void ask_choice_change(int& choice);
+void ask_choice_change(int& choice); //change function
+void ask_update_confrim(int& choice); //new function
 void ask_date(int &year, int &month, int &day);
 void ask_session(int &session);
 void ask_guest(int &guest_num);
 void ask_name(string &first_name);
 void ask_contact(string &contact);
 void ask_info(struct customer &customer_info);
-void run_option(struct customer** customers, struct customer** results, int &n_customer, int& matches, int& r_num, int option);
+void run_option(struct customer** customers, struct customer** results, int &n_customer, int& matches, int& r_num, int option); //change function
 void available_msg(bool result, int empty_space);
+void sry_msg(int empty_space); //new function
 bool src_available(struct customer* customers, int n_customer, int &empty_space, struct customer customer_info);
 void advanced_search(struct customer** results, struct customer* customers, int n_customer, int& matches);
 void add_customer_info(struct customer** customers, int n_customer, struct customer customer_info, int& r_num);
 void add_reserve(struct customer** customers, int& n_customer, struct customer customer_info, int& r_num);
 void delete_reservation(struct customer* customers, int& n_customer);
 void get_r_num(int& input);
-bool find_r_customer(struct customer* customers, struct customer& result, int n_customer, int r_num);
+void change_reservation(struct customer* customers, int n_customer); //new function
+int find_r_customer(struct customer* customers, struct customer& result, int n_customer, int r_num); //change function
 
 #endif

@@ -29,9 +29,8 @@ int main(int argc, char* argv[])
 	do
 	{
 		ask_choice(choice);
-		system("cls");
 		run_option(&customers, &result, n_customer, result_count, r_num, choice);
-	} 
+	}
 	while (choice != 5);
 	save_data(customers, n_customer, r_num, argv, outfile);
 	free_customer(&customers);

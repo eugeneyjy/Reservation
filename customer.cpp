@@ -426,10 +426,10 @@ void copy_customer(struct customer* source, struct customer* destination, int n_
 ** Function: Check if customer input for advanced search is substring
              compared to customer information
 ** Description: Check if customer input for advanced search is substring
-                compared to customer information 
+                compared to customer information
 ** Parameters: struct customer
 ** Pre-Conditions: Customer enter substring to perform advanced search
-** Post-Conditions: Perform delete_customer funciton if substring 
+** Post-Conditions: Perform delete_customer funciton if substring
                     input is valid
 *********************************************************************/
 bool equal(struct customer lhs, struct customer rhs)
@@ -494,7 +494,7 @@ void delete_customer(struct customer* customers, struct customer customer_info, 
 ** Description: Check if a string input is an integer
 ** Parameters: string
 ** Pre-Conditions: Integer input is entered
-** Post-Conditions: 
+** Post-Conditions:
 *********************************************************************/
 bool is_int(string num)
 {
@@ -607,11 +607,11 @@ void ask_choice(int& choice)
 
 /*********************************************************************
 ** Function: Prompt and get update reservation options from customer
-** Description: Customer choose his/her options in order to update 
+** Description: Customer choose his/her options in order to update
                 reservation record
 ** Parameters: int&
 ** Pre-Conditions: Customer choose to update reservation record
-** Post-Conditions: Either one out of three options are choose by 
+** Post-Conditions: Either one out of three options are choose by
                     customer
 *********************************************************************/
 void ask_choice_update(int& choice)
@@ -626,24 +626,34 @@ void ask_choice_update(int& choice)
 
 /*********************************************************************
 ** Function: Prompt and get change reservation options from customer
-** Description: Customer choose his/her options in order to change 
+** Description: Customer choose his/her options in order to change
                 reservation record
 ** Parameters: int&
 ** Pre-Conditions: Customer choose to change reservation record
-** Post-Conditions: Either one out of four options are choose by 
+** Post-Conditions: Either one out of four options are choose by
                     customer
 *********************************************************************/
 void ask_choice_change(int& choice)
 {
   cout << "Choose an option to change reservation record: " << endl;
-  cout << "1. Change contact number" << endl;
-  cout << "2. Change name" << endl;
-  cout << "3. Change session" << endl;
-  cout << "4. Change date" << endl << endl;
+  cout << "1. Name" << endl;
+  cout << "2. Session" << endl;
+  cout << "3. Date" << endl;
+  cout << "4. Contact" << endl;
+  cout << "5. Number of guest" << endl;
   cout << "Option: ";
-  choice = get_betwn(1, 4);
+  choice = get_betwn(1, 5);
 }
 
+void ask_update_confrim(int& choice)
+{
+  cout << "Choose an option to perform next action: " << endl;
+  cout << "1. Update changes" << endl;
+  cout << "2. Discard changes" << endl;
+  cout << "3. Continue changing" << endl;
+  cout << "Option: ";
+  choice = get_betwn(1, 3);
+}
 /*********************************************************************
 ** Function: Input date from customer
 ** Description: Ask date from customer while asking for reservation
@@ -836,6 +846,20 @@ void available_msg(bool available, int empty_space)
   }
 }
 
+/*********************************************************************
+** Function:
+** Description:
+** Parameters:
+** Pre-Conditions:
+** Post-Conditions:
+*********************************************************************/
+void sry_msg(int empty_space)
+{
+  cout << endl;
+  cout << "Sorry we have only " << empty_space << " seat(s) left for the reservation time." << endl;
+  cout << "Please double check the reservation availability." << endl;
+}
+
 /************************************************************************
 ** Function: Run the options choose by customer
 ** Description: Run the options choose by customer in ask_choice function
@@ -886,7 +910,8 @@ void run_option(struct customer** customers, struct customer** results, int& n_c
     }
     else if (option == 3)
     {
-      cout << "In progress" << endl;
+      cout << "Changing reservation record..." << endl;
+      change_reservation(*customers, n_customer);
     }
   }
   else if(option == 4)
@@ -906,7 +931,7 @@ void run_option(struct customer** customers, struct customer** results, int& n_c
 ** Description: Check for availability
 ** Parameters: struct customer*, int, int&, struct customer
 ** Pre-Conditions: Customet enter date and sessions
-** Post-Conditions: Display the availability of a sessions 
+** Post-Conditions: Display the availability of a sessions
 *********************************************************************/
 bool src_available(struct customer* customers, int n_customer, int& empty_space, struct customer customer_info)
 {
@@ -934,7 +959,7 @@ bool src_available(struct customer* customers, int n_customer, int& empty_space,
 }
 
 /*********************************************************************
-** Function: 
+** Function:
 ** Description:
 ** Parameters:
 ** Pre-Conditions:
@@ -1003,9 +1028,7 @@ void add_reserve(struct customer** customers, int& n_customer, struct customer c
   bool available = src_available(*customers, n_customer, empty_space, customer_info);
   if(!available)
   {
-    cout << endl;
-    cout << "Sorry we have only " << empty_space << " seat(s) left for the reservation time." << endl;
-    cout << "Please double check the reservation availability." << endl;
+    sry_msg(empty_space);
   }
   else
   {
@@ -1024,8 +1047,8 @@ void add_reserve(struct customer** customers, int& n_customer, struct customer c
 *********************************************************************/
 void print_session()
 {
-  setfill(' ');
-  cout << setw(50) << "\t       __       __        __\n";
+
+  cout <<  setfill(' ') << setw(50) << "\t       __       __        __\n";
 	cout << setw(80) << "\t      /  \\    /  \\ ____ |  | ____  ____    _____   ____ \n";
 	cout << setw(80) << "\t      \\   \\/\\/   // __ \\|  |/ ___\\/  _ \\  /     \\ / __ \\\n";
 	cout << setw(80) << "\t       \\        /|  ___/|  |  \\__(  <_> )|  | |  \|  ___/\n";
@@ -1040,30 +1063,29 @@ void print_session()
 
 /*********************************************************************
 ** Function: Delete reservation record
-** Description: Delete a customer reservation record if he/she intend 
+** Description: Delete a customer reservation record if he/she intend
                 to do so
-** Parameters: struct customer*, int& 
+** Parameters: struct customer*, int&
 ** Pre-Conditions: Customer chose delete reservation record as option
-** Post-Conditions: Customer reservation is either deleted or cancel 
+** Post-Conditions: Customer reservation is either deleted or cancel
                     deletion
 *********************************************************************/
 void delete_reservation(struct customer* customers, int& n_customer)
 {
   struct customer confirm_customer;
   char decision;
-  int reserve_num = 0;
-  bool exist = false;
+  int reserve_num = 0, customer_index = 0;
   cout << "Reservation No.: ";
   do
   {
     get_r_num(reserve_num);
-    exist = find_r_customer(customers, confirm_customer, n_customer, reserve_num);
-    if(!exist)
+    customer_index = find_r_customer(customers, confirm_customer, n_customer, reserve_num);
+    if(customer_index == -1)
     {
       cout << "Reservation number not found..." << endl;
       cout << "Please enter a valid Reservation No.: ";
     }
-  }while(exist == false);
+  }while(customer_index == -1);
   print_info(&confirm_customer, 1);
   cout << "Are you sure you want to delete? (Y/y) or (N/n) : ";
   get_char(decision);
@@ -1118,6 +1140,78 @@ void get_r_num(int& input)
 }
 
 /*********************************************************************
+** Function:
+** Description:
+** Parameters:
+** Pre-Conditions:
+** Post-Conditions:
+*********************************************************************/
+void change_reservation(struct customer* customers, int n_customer)
+{
+  int decision = 0, next_act = 0, empty_space = 0;
+  struct customer confirm_customer, temp_customer, save_customer;
+  int reserve_num = 0, customer_index = 0;
+  bool available;
+  cout << "Reservation No.: ";
+  do
+  {
+    get_r_num(reserve_num);
+    customer_index = find_r_customer(customers, confirm_customer, n_customer, reserve_num);
+    if(customer_index == -1)
+    {
+      cout << "Reservation number not found..." << endl;
+      cout << "Please enter a valid Reservation No.: ";
+    }
+  }while(customer_index == -1);
+  temp_customer = confirm_customer;
+  save_customer = confirm_customer;
+  print_info(&confirm_customer, 1);
+  do
+  {
+    ask_choice_change(decision);
+    if(decision == 1)
+    {
+      ask_name(temp_customer.name);
+    }
+    else if(decision == 2)
+    {
+      ask_session(temp_customer.session);
+      available = src_available(customers, n_customer, empty_space, temp_customer);
+    }
+    else if(decision == 3)
+    {
+      ask_date(temp_customer.curr_date.year, temp_customer.curr_date.month, temp_customer.curr_date.day);
+      available = src_available(customers, n_customer, empty_space, temp_customer);
+    }
+    else if(decision == 4)
+    {
+      ask_contact(temp_customer.contact);
+    }
+    else if(decision == 5)
+    {
+      ask_guest(temp_customer.n_seat);
+      available = src_available(customers, n_customer, empty_space, temp_customer);
+    }
+    if(!available)
+    {
+      sry_msg(empty_space);
+      temp_customer = save_customer;
+    }
+    else
+    {
+      save_customer = temp_customer;
+    }
+    cout << "Reservation information" << endl;
+    print_info(&save_customer, 1);
+    ask_update_confrim(next_act);
+  }while(next_act == 3);
+  if(next_act == 1)
+  {
+    customers[customer_index] = temp_customer;
+  }
+}
+
+/*********************************************************************
 ** Function: Determine if reservation number exist
 ** Description: Compared reservation number entered with existing
                 reservation number
@@ -1125,10 +1219,10 @@ void get_r_num(int& input)
 ** Pre-Conditions: Reservation number exist
 ** Post-Conditions: The existence of reservation number is determined
 *********************************************************************/
-bool find_r_customer(struct customer* customers, struct customer& result, int n_customer, int r_num)
+int find_r_customer(struct customer* customers, struct customer& result, int n_customer, int r_num)
 {
   struct customer* temp;
-  int match = n_customer;
+  int match = n_customer, index = 0;
   temp = allocate_customer(n_customer);
   copy_customer(customers, temp, n_customer);
   for(int i = 0; i < n_customer; i++)
@@ -1137,13 +1231,17 @@ bool find_r_customer(struct customer* customers, struct customer& result, int n_
     {
       delete_customer(temp, customers[i], match);
     }
+    else
+    {
+      index = i;
+    }
   }
   if(match > 0)
   {
     result = temp[0];
     free_customer(&temp);
-    return true;
+    return index;
   }
   free_customer(&temp);
-  return false;
+  return -1;
 }
