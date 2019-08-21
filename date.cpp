@@ -59,3 +59,31 @@ int day_of_the_week(int param_year, int param_month, int param_day)
   }
   return day;
 }
+
+void corret_date(int& year, int& month, int& day)
+{
+  //Fixing day
+  int special_day = MAX_DAY[1] + 1;
+  if(month == 2 && (year % 4 == 0))
+  {
+    if(day > special_day)
+    {
+      day -= special_day;
+      month += 1;
+    }
+  }
+  else
+  {
+    if(day > MAX_DAY[month-1])
+    {
+      day -= MAX_DAY[month-1];
+      month += 1;
+    }
+  }
+  //Fixing month
+  if(month > 12)
+  {
+    month -= 12;
+    year += 1;
+  }
+}

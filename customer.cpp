@@ -666,16 +666,17 @@ void ask_date(int& year, int& month, int& day)
 {
   time_t now = time(NULL);
   tm* time = localtime(&now);
-  int curr_year = 1900 + time->tm_year;
-  int curr_month =1 + time->tm_mon;
-  int curr_day = time->tm_mday;
+  int restrict_year = 1900 + time->tm_year;
+  int restrict_month = 1 + time->tm_mon;
+  int restrict_day = time->tm_mday + 3;
+  corret_date(restrict_year, restrict_month, restrict_day);
   cout << "Enter date in the following: " << endl;
   cout << "Year: ";
-  year = get_betwn(curr_year, 9999);
+  year = get_betwn(restrict_year, 9999);
   cout << "Month: ";
-  get_month(year, curr_year, month, curr_month);
+  get_month(year, restrict_year, month, restrict_month);
   cout << "Day: ";
-  get_day(year, curr_year, month, curr_month, day, curr_day);
+  get_day(year, restrict_year, month, restrict_month, day, restrict_day);
 }
 
 /************************************************************************
