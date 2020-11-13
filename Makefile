@@ -1,16 +1,23 @@
-CC=g++ -std=c++11 -g
-EXE_FILE=reservation
+CXX		  := g++
+CXX_FLAGS := -Wall -Wextra -std=c++17 -ggdb
 
-all: $(EXE_FILE)
+BIN		:= bin
+SRC		:= src
+INCLUDE	:= include
+LIB		:= lib
 
-$(EXE_FILE): app.cpp customer.o date.o customer.hpp date.hpp
-	$(CC) app.cpp customer.o date.o -o $(EXE_FILE)
+LIBRARIES	:=
+EXECUTABLE	:= main
 
-customer.o: customer.hpp customer.cpp
-	$(CC) -c customer.cpp
 
-date.o: date.hpp date.cpp
-	$(CC) -c date.cpp
-	
+all: $(BIN)/$(EXECUTABLE)
+
+run: clean all
+	clear
+	./$(BIN)/$(EXECUTABLE)
+
+$(BIN)/$(EXECUTABLE): $(SRC)/*.cpp
+	$(CXX) $(CXX_FLAGS) -I$(INCLUDE) -L$(LIB) $^ -o $@ $(LIBRARIES)
+
 clean:
-	rm -f *.o $(EXE_FILE)
+	-rm $(BIN)/*
